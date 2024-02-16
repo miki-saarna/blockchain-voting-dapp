@@ -24,6 +24,12 @@ contract Vote {
     2: 0
   };
 
+  constructor(
+        IVoteToken _voteToken
+    ) {
+        voteToken = _voteToken;
+    }
+
   function castVote(uint256 candidateIdx) {
     if (pollEndTime) {
       revert Vote__PollClosed(pollEndTime);
@@ -35,6 +41,8 @@ contract Vote {
 
     ownerToCandidateIdx[msg.sender] = candidateIdx;
     candidateToVoteCounts[candidateIdx] += 1;
+
+    // voteToken.transferFrom(msg.sender, address(this), 1);
   }
 
   function tallyVotes() return ([]string) {
