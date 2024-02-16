@@ -13,7 +13,6 @@ contract Vote {
   error Vote__UserHasNotVoted;
   error Vote__UserAlreadyClaimedRewardBonus;
   
-  uint256 voteId = 1;
   uint256 pollEndTime;
   uint256 voteRewardAmount = 50;
   uint256 voteRewardBonusAmount;
@@ -21,8 +20,6 @@ contract Vote {
   uint256 totalVoteCount = 0;
   uint256 totalRegisteredVoters = 3000000;
 
-  mapping(uint256 id => address owner) idToOwners;
-  mapping(address owner => uint256 id) ownerToId;
   mapping(address owner => bool claimed) claimedRewardBonus;
   mapping(address owner => uint256 candidateIdx) ownerToCandidateIdx;
   mapping (uint256 candidateIdx => uint256 voteCount) candidateToVoteCounts = {
