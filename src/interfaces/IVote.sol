@@ -21,9 +21,9 @@ interface IVote {
 
   function castVote(uint256 candidateIdx) external;
 
-  function tallyVotes() external view returns (string[] memory);
+  function getWinners() external view returns (string[] memory);
 
-  function declareWinner() external returns (string memory);
+  function endPoll() external;
 
   function getTokenRewardBonusAmount() external view returns (uint256);
 

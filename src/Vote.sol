@@ -55,45 +55,37 @@ contract Vote {
       voteToken.transferFrom(address(voteVault), msg.sender, voteRewardAmount);
 
       if (totalVoteCount == totalRegisteredVoters) {
-        declareWinner();
+        endPoll();
       }
     }
   }
 
-  function declareWinner() public returns (string memory) {
+  function endPoll() public {
     pollEndTime = block.timestamp;
-
-    string[] memory winners = tallyVotes();
-    string memory winner;
-
-    if (winners.length > 1) {
-      winner = "It's a tie!";
-    } else {
-      winner = winners[0];
-    }
-
     voteRewardBonusAmount = getTokenRewardBonusAmount();
-
-    return winner;
   }
 
-  function tallyVotes() public view returns (string[] memory) {
-    uint256 mostVotesCount = 0;
-    uint256[] memory mostVotesIdx = [];
+  function getWinners() external view returns (string[] memory) {
+    uint256 mostVotesAmount;
+    uint256 numberOfWinners;
 
     for (uint i = 0; i < candidates.length; i++) {
-      if (candidateIdxToVoteCount[i] > mostVotesCount) {
-        mostVotesCount = candidateIdxToVoteCount[i];
-        mostVotesIdx = [i];
-      } else if (candidateIdxToVoteCount[i] == mostVotesCount) {
-        mostVotesIdx.push(i);
+      if (candidateIdxToVoteCount[i] > mostVotesAmount) {
+        mostVotesAmount = candidateIdxToVoteCount[i];
+        numberOfWinners = 1;
+      } else if (candidateIdxToVoteCount[i] == mostVotesAmount) {
+        numberOfWinners++;
       }
     }
 
-    string[] memory winnerNames = [];
+    string[] memory winnerNames = new string[](numberOfWinners);
 
-    for (uint i = 0; i < mostVotesIdx.length; i++) {
-      winnerNames.push(candidates[i]);
+    uint index = 0;
+    for (uint i = 0; i < candidates.length; i++) {
+      if (candidateIdxToVoteCount[i] == mostVotesAmount) {
+        winnerNames[index] = candidates[i];
+        index++;
+      }
     }
 
     return winnerNames;
