@@ -6,17 +6,11 @@ import {IVote} from "./interfaces/IVote.sol";
 contract VoteToken is ERC20 {
 
   error VoteToken__Unauthorized();
-
-  IVote public immutable voteContract;
-  address public immutable voteVault;
-
   event VoteVaultInitialized(address indexed voteVaultContract);
 
-  constructor(
-   IVote _voteContract,
-   address _voteVault
-  ) ERC20("VoteToken", "VOTE", 18) {
-    voteContract = _voteContract;
+  address public immutable voteVault;
+
+  constructor(address _voteVault) ERC20("VoteToken", "VOTE", 18) {
     voteVault = _voteVault;
   }
 
