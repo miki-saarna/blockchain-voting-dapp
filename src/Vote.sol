@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.23;
 
-// add functionality to incentivize voting; incentive exponentially increases as more people vote
-
 contract Vote {
 
   error Vote__PollNotClosed();
@@ -27,7 +25,7 @@ contract Vote {
 
   mapping(address owner => uint256 candidateIdx) ownerToCandidateIdx;
 
-  [] public candidates = ["Candidate 1", "Candidate 2", "Candidate 3"];
+  string[] public candidates = ["Candidate 1", "Candidate 2", "Candidate 3"];
 
   mapping (uint256 candidateIdx => uint256 voteCount) candidateToVoteCounts = {
     0: 0,
@@ -43,7 +41,7 @@ contract Vote {
         voteVault = _voteVault;
     }
 
-  function castVote(uint256 candidateIdx) {
+  function castVote(uint256 candidateIdx) public {
     if (pollEndTime) {
       revert Vote__PollClosed(pollEndTime);
     }
@@ -63,9 +61,9 @@ contract Vote {
     voteToken.transferFrom(address(voteVault), msg.sender, address(this), voteRewardAmount);
   }
 
-  function tallyVotes() return ([]string) {
+  function tallyVotes() returns (string[]) {
     uint256 mostVotes = 0;
-    []uint256 mostVotesIdx = [];
+    uint256[] mostVotesIdx = [];
     for (uint i = 0; i < candidates.length; i++) {
       if (candidateToVoteCounts[i] > mostVotes) {
         mostVotes = candidateToVoteCounts[i]
@@ -74,7 +72,7 @@ contract Vote {
         mostVotesIdx.push(i);
       }
 
-      []string winnerNames = [];
+      string[] winnerNames = [];
       for (uint i = 0; i < mostVotesIdx.length; i++) {
         winnerNames.push(candidiates[i])
       }
@@ -89,7 +87,7 @@ contract Vote {
   function declareWinner() returns (string) {
     pollEndTime = block.timestamp;
 
-    []string winners = tallyVotes();
+    string[] winners = tallyVotes();
     string winner;
 
     if (winners.length > 1) {
