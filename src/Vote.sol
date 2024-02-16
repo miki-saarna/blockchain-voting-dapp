@@ -20,8 +20,8 @@ contract Vote {
   uint256 public totalVoteCount = 0;
   uint256 public totalRegisteredVoters = 3000000;
 
-  mapping(address owner => bool claimed) private claimedRewardBonus;
   mapping(address owner => bool voted) private ownerVoted;
+  mapping(address owner => bool claimed) private claimedRewardBonus;
   mapping (uint256 candidateIdx => uint256 voteCount) public candidateIdxToVoteCount;
 
   string[3] public candidates = ["Candidate 1", "Candidate 2", "Candidate 3"];
@@ -74,9 +74,10 @@ contract Vote {
     return winner;
   }
 
-  function tallyVotes() public returns (string[] memory) {
+  function tallyVotes() public view returns (string[] memory) {
     uint256 mostVotesCount = 0;
     uint256[] memory mostVotesIdx = [];
+
     for (uint i = 0; i < candidates.length; i++) {
       if (candidateIdxToVoteCount[i] > mostVotesCount) {
         mostVotesCount = candidateIdxToVoteCount[i];
@@ -87,6 +88,7 @@ contract Vote {
     }
 
     string[] memory winnerNames = [];
+
     for (uint i = 0; i < mostVotesIdx.length; i++) {
       winnerNames.push(candidates[i]);
     }
@@ -95,7 +97,7 @@ contract Vote {
     // emit VoteTally(candidate, voteCount);
   }
 
-  function getTokenRewardBonusAmount() public view returns (uint256) {
+  function getTokenRewardBonusAmount() public view returns (uint256 memory) {
     uint256 RewardBonusAmount = voteRewardBonusMaxAmount * ((totalVoteCount / totalRegisteredVoters) ** 2); // Solidity rounds this value down to nearest integer
     if (RewardBonusAmount == 0) {
       return 1;
