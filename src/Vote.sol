@@ -30,10 +30,7 @@ contract Vote {
 
   string[3] public candidates = ["Candidate 1", "Candidate 2", "Candidate 3"];
 
-  constructor(
-    IVoteToken _voteToken,
-    IVault _voteVault
-  ) {
+  constructor(IVoteToken _voteToken, IVault _voteVault) {
     voteToken = _voteToken;
     voteVault = _voteVault;
   }
@@ -120,7 +117,7 @@ contract Vote {
       voteToken.transferFrom(address(voteVault), msg.sender, voteRewardBonusAmount)
     }
   }
-  
+
   function checkIfSenderAlreadyVoted() external view returns (bool) {
     return ownerVoted[msg.sender];
   }
