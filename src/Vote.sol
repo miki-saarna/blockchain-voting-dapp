@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.23;
 
-import {IVoteToken} from "./interfaces/IVoteToken.sol";
-import {IVault} from "./interfaces/IVault.sol";
+// import {IVoteToken} from "./interfaces/IVoteToken.sol";
+// import {IVault} from "./interfaces/IVault.sol";
+import {VoteToken} from "./VoteToken.sol";
+import {Vault} from "./Vault.sol";
 
 contract Vote {
 
@@ -13,8 +15,8 @@ contract Vote {
   error Vote__UserHasNotVoted();
   error Vote__UserAlreadyClaimedRewardBonus();
 
-  IVoteToken public immutable voteToken;
-  IVault public immutable voteVault;
+  VoteToken public immutable voteToken;
+  Vault public immutable voteVault;
   
   uint256 public pollEndTime;
   uint256 public voteRewardAmount = 50;
@@ -29,7 +31,7 @@ contract Vote {
 
   string[3] public candidates = ["Candidate 1", "Candidate 2", "Candidate 3"];
 
-  constructor(IVoteToken _voteToken, IVault _voteVault) {
+  constructor(VoteToken _voteToken, Vault _voteVault) {
     voteToken = _voteToken;
     voteVault = _voteVault;
 
