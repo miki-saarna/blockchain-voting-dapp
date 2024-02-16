@@ -8,7 +8,7 @@ contract Vote {
 
   error Vote__PollNotClosed();
   error Vote__PollClosed(uint256 pollEndTime);
-  error Vote__UserAlreadyVoted(address owner, string candidate);
+  error Vote__UserAlreadyVoted(address owner);
   error Vote__AllRegisteredVotersAlreadyVoted(address owner);
   error Vote__UserHasNotVoted;
   error Vote__UserAlreadyClaimedRewardBonus;
@@ -21,7 +21,7 @@ contract Vote {
   uint256 public totalRegisteredVoters = 3000000;
 
   mapping(address owner => bool claimed) private claimedRewardBonus;
-  mapping(address owner => uint256 candidateIdx) private ownerToCandidateIdx;
+  mapping(address owner => bool voted) private ownerVoted;
   mapping (uint256 candidateIdx => uint256 voteCount) public candidateIdxToVoteCount = {
     0: 0,
     1: 0,
@@ -45,10 +45,10 @@ contract Vote {
       revert Vote__PollClosed(pollEndTime);
     } else if (totalVoteCount == totalRegisteredVoters) {
       revert Vote__AllRegisteredVotersAlreadyVoted(msg.sender);
-    } else if (ownerToCandidateIdx[msg.sender] != 0) {
-      revert Vote__UserAlreadyVoted(msg.sender, candidates[ownerToCandidateIdx[msg.sender]]);
+    } else if (ownerVoted[msg.sender]) {
+      revert Vote__UserAlreadyVoted(msg.sender);
     } else {
-      ownerToCandidateIdx[msg.sender] = candidateIdx;
+      ownerVoted[msg.sender] = true;
       candidateIdxToVoteCount[candidateIdx] += 1;
       totalVoteCount += 1;
 
@@ -111,7 +111,7 @@ contract Vote {
   function claimRewardBonus() {
     if (pollEndTime == 0) {
       revert Vote__PollNotClosed();
-    } else if (!ownerToCandidateIdx[msg.sender]) {
+    } else if (!ownerVoted[msg.sender]) {
       revert Vote__UserHasNotVoted();
     } else if (claimedRewardBonus[msg.sender]) {
       revert Vote__UserAlreadyClaimedRewardBonus();
