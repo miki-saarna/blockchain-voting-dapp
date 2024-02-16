@@ -72,7 +72,7 @@ contract Vote {
       winner = winners[0];
     }
 
-    uint256 voteRewardBonusAmount = getTokenRewardBonusAmount();
+    voteRewardBonusAmount = getTokenRewardBonusAmount();
 
     return winner;
   }
