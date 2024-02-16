@@ -113,8 +113,8 @@ contract Vote {
     } else if (claimedRewardBonus[msg.sender]) {
       revert Vote__UserAlreadyClaimedRewardBonus();
     } else {
-      claimedRewardBonus[msg.sender] = true
-      voteToken.transferFrom(address(voteVault), msg.sender, voteRewardBonusAmount)
+      claimedRewardBonus[msg.sender] = true;
+      voteToken.transferFrom(address(voteVault), msg.sender, voteRewardBonusAmount);
     }
   }
 
