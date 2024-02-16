@@ -60,11 +60,11 @@ contract Vote {
     }
   }
 
-  function declareWinner() public returns (string) {
+  function declareWinner() public returns (string memory) {
     pollEndTime = block.timestamp;
 
-    string[] winners = tallyVotes();
-    string winner;
+    string[] memory winners = tallyVotes();
+    string memory winner;
 
     if (winners.length > 1) {
       winner = "It's a tie!";
@@ -72,33 +72,33 @@ contract Vote {
       winner = winners[0];
     }
 
-    uint256 voteRewardBonusAmount = getTokenRewardBonusAmount()
+    uint256 voteRewardBonusAmount = getTokenRewardBonusAmount();
 
     return winner;
   }
 
-  function tallyVotes() public returns (string[]) {
+  function tallyVotes() public returns (string[] memory) {
     uint256 mostVotesCount = 0;
-    uint256[] mostVotesIdx = [];
+    uint256[] memory mostVotesIdx = [];
     for (uint i = 0; i < candidates.length; i++) {
       if (candidateIdxToVoteCount[i] > mostVotesCount) {
-        mostVotesCount = candidateIdxToVoteCount[i]
+        mostVotesCount = candidateIdxToVoteCount[i];
         mostVotesIdx = [i];
-      } else if (candidateIdxToVoteCount[i] = mostVotesCount) {
+      } else if (candidateIdxToVoteCount[i] == mostVotesCount) {
         mostVotesIdx.push(i);
       }
     }
 
-    string[] winnerNames = [];
+    string[] memory winnerNames = [];
     for (uint i = 0; i < mostVotesIdx.length; i++) {
-      winnerNames.push(candidiates[i])
+      winnerNames.push(candidates[i]);
     }
 
-    return winnerNames
+    return winnerNames;
     // emit VoteTally(candidate, voteCount);
   }
 
-  function getTokenRewardBonusAmount() public returns (uint256) {
+  function getTokenRewardBonusAmount() public view returns (uint256) {
     uint256 RewardBonusAmount = voteRewardBonusMaxAmount * ((totalVoteCount / totalRegisteredVoters) ** 2); // Solidity rounds this value down to nearest integer
     if (RewardBonusAmount == 0) {
       return 1;
@@ -121,3 +121,7 @@ contract Vote {
     }
   }
 }
+
+  function checkIfSenderAlreadyVoted() external view returns (bool) {
+    return ownerVoted[msg.sender];
+  }
