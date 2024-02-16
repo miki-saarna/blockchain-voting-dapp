@@ -10,8 +10,11 @@ contract Vote {
   error Vote__PollClosed(uint256 pollEndTime);
   error Vote__UserAlreadyVoted(address owner);
   error Vote__AllRegisteredVotersAlreadyVoted(address owner);
-  error Vote__UserHasNotVoted;
-  error Vote__UserAlreadyClaimedRewardBonus;
+  error Vote__UserHasNotVoted();
+  error Vote__UserAlreadyClaimedRewardBonus();
+
+  IVoteToken public immutable voteToken;
+  IVault public immutable voteVault;
   
   uint256 public pollEndTime;
   uint256 public voteRewardAmount = 50;
@@ -30,7 +33,7 @@ contract Vote {
     voteToken = _voteToken;
     voteVault = _voteVault;
 
-    for (i = 0; i < candidates.length; i++) {
+    for (uint256 i = 0; i < candidates.length; i++) {
       candidateIdxToVoteCount[i] = 0;
     }
   }
