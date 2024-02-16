@@ -1,14 +1,20 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.23;
 
-error VoteToken__Unauthorized();
+import {IVote} from "./interfaces/IVote.sol";
 
-event VoteVaultInitialized(address indexed voteVaultContract);
 
 contract VoteToken is ERC20 {
 
+  error VoteToken__Unauthorized();
+
+  IVote public immutable voteContract;
+  address public immutable voteVault;
+
+  event VoteVaultInitialized(address indexed voteVaultContract);
+
   constructor(
-   _voteContract,
+   IVote _voteContract,
    address _voteVault
   ) ERC20("VoteToken", "VOTE", 18) {
     voteContract = _voteContract;
