@@ -60,7 +60,7 @@ contract Vote {
     }
   }
 
-  function declareWinner() returns (string) {
+  function declareWinner() public returns (string) {
     pollEndTime = block.timestamp;
 
     string[] winners = tallyVotes();
@@ -77,7 +77,7 @@ contract Vote {
     return winner;
   }
 
-  function tallyVotes() returns (string[]) {
+  function tallyVotes() public returns (string[]) {
     uint256 mostVotesCount = 0;
     uint256[] mostVotesIdx = [];
     for (uint i = 0; i < candidates.length; i++) {
@@ -98,7 +98,7 @@ contract Vote {
     // emit VoteTally(candidate, voteCount);
   }
 
-  function getTokenRewardBonusAmount() returns (uint256) {
+  function getTokenRewardBonusAmount() public returns (uint256) {
     uint256 RewardBonusAmount = voteRewardBonusMaxAmount * ((totalVoteCount / totalRegisteredVoters) ** 2); // Solidity rounds this value down to nearest integer
     if (RewardBonusAmount == 0) {
       return 1;
@@ -108,7 +108,7 @@ contract Vote {
   }
 
   // Pull Mechanism:
-  function claimRewardBonus() {
+  function claimRewardBonus() public {
     if (pollEndTime == 0) {
       revert Vote__PollNotClosed();
     } else if (!ownerVoted[msg.sender]) {
