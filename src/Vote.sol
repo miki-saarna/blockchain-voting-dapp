@@ -5,9 +5,11 @@ pragma solidity ^0.8.23;
 
 contract Vote {
 
+  error Vote__PollClosed(uint256 pollEndTime);
   error Vote__UserAlreadyVoted(address owner, string candidate);
   
   uint256 voteId = 1;
+  uint256 pollEndTime;
 
   mapping(uint256 id => address owner) idToOwners;
   mapping(address owner => uint256 id) ownerToId;
@@ -23,6 +25,10 @@ contract Vote {
   };
 
   function castVote(uint256 candidateIdx) {
+    if (pollEndTime) {
+      revert Vote__PollClosed(pollEndTime);
+    }
+
     if (ownerToCandidateIdx[msg.sender] != 0) {
       revert Vote__UserAlreadyVoted(msg.sender, candidates[ownerToCandidateIdx[msg.sender]]);
     }
@@ -55,6 +61,8 @@ contract Vote {
   }
 
   function declareWinner() returns (string) {
+    pollEndTime = block.timestamp;
+
     []string winners = tallyVotes();
     if (winners.length > 1) {
       return "It's a tie!";
