@@ -11,7 +11,7 @@ contract VoteToken is ERC20 {
 
   address public immutable voteVault;
 
-  constructor(address _voteVault) ERC20("VoteToken", "VOTE", 18) {
+  constructor(address _voteVault) ERC20("VoteToken", "VOTE") {
     voteVault = _voteVault;
   }
 
