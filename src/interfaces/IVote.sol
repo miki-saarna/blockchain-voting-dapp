@@ -17,7 +17,7 @@ interface IVote {
 
   function candidateIdxToVoteCount(uint256 candidateIdx) external returns (uint256);
 
-  function candidates() external returns (string[3]);
+  function candidates() external returns (string[3] memory);
 
   function castVote(uint256 candidateIdx) external;
 
