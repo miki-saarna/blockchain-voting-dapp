@@ -120,8 +120,9 @@ contract Vote {
       voteToken.transferFrom(address(voteVault), msg.sender, voteRewardBonusAmount)
     }
   }
-}
-
+  
   function checkIfSenderAlreadyVoted() external view returns (bool) {
     return ownerVoted[msg.sender];
   }
+}
+
