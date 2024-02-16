@@ -100,7 +100,7 @@ contract Vote {
     // emit VoteTally(candidate, voteCount);
   }
 
-  function getTokenRewardBonusAmount() public view returns (uint256 memory) {
+  function getTokenRewardBonusAmount() public view returns (uint256) {
     uint256 RewardBonusAmount = voteRewardBonusMaxAmount * ((totalVoteCount / totalRegisteredVoters) ** 2); // Solidity rounds this value down to nearest integer
     if (RewardBonusAmount == 0) {
       return 1;

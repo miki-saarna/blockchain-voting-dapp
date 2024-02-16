@@ -25,7 +25,7 @@ interface IVote {
 
   function declareWinner() external returns (string memory);
 
-  function getTokenRewardBonusAmount() external view returns (uint256 memory);
+  function getTokenRewardBonusAmount() external view returns (uint256);
 
   function claimRewardBonus() external;
 
