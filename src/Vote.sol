@@ -41,7 +41,7 @@ contract Vote {
   function castVote(uint256 candidateIdx) public {
     // add functionality to confirm msg.sender is a registered voter
 
-    if (pollEndTime) {
+    if (pollEndTime == 0) {
       revert Vote__PollClosed(pollEndTime);
     } else if (totalVoteCount == totalRegisteredVoters) {
       revert Vote__AllRegisteredVotersAlreadyVoted(msg.sender);
