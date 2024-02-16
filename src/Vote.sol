@@ -1,15 +1,20 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.23;
 
-// add functionality to incentivize voting
+// add functionality to incentivize voting; incentive exponentially increases as more people vote
 
 contract Vote {
 
   error Vote__PollClosed(uint256 pollEndTime);
   error Vote__UserAlreadyVoted(address owner, string candidate);
+  error Vote__AllRegisteredVotersAlreadyVoted(address owner);
   
   uint256 voteId = 1;
   uint256 pollEndTime;
+  uint256 voteRewardAmount = 50;
+  uint256 voteRewardBonusMaxAmount = 1000;
+  uint256 totalVoteCount = 0;
+  uint256 totalRegisteredVoters = 3000000;
 
   mapping(uint256 id => address owner) idToOwners;
   mapping(address owner => uint256 id) ownerToId;
@@ -25,14 +30,20 @@ contract Vote {
   };
 
   constructor(
-        IVoteToken _voteToken
+        _voteToken,
+        _voteVault
     ) {
         voteToken = _voteToken;
+        voteVault = _voteVault;
     }
 
   function castVote(uint256 candidateIdx) {
     if (pollEndTime) {
       revert Vote__PollClosed(pollEndTime);
+    }
+
+    if (totalVoteCount == totalRegisteredVoters) {
+      revert Vote__AllRegisteredVotersAlreadyVoted(msg.sender);
     }
 
     if (ownerToCandidateIdx[msg.sender] != 0) {
@@ -41,8 +52,9 @@ contract Vote {
 
     ownerToCandidateIdx[msg.sender] = candidateIdx;
     candidateToVoteCounts[candidateIdx] += 1;
+    totalVoteCount += 1;
 
-    // voteToken.transferFrom(msg.sender, address(this), 1);
+    voteToken.transferFrom(address(voteVault), msg.sender, address(this), voteRewardAmount);
   }
 
   function tallyVotes() return ([]string) {
@@ -72,11 +84,26 @@ contract Vote {
     pollEndTime = block.timestamp;
 
     []string winners = tallyVotes();
+    string winner;
+
     if (winners.length > 1) {
-      return "It's a tie!";
+      winner = "It's a tie!";
     } else {
-      return winners[0];
+      winner = winners[0];
     }
+
+    uint256 rewardBonusAmount = getTokenRewardBonusAmount()
+    // voteToken.transfer(address(voteVault), msg.sender, rewardBonusAmount); // need to alter this to send bonus reward to ALL who voted
+
+    return winner;
   }
 
+  function getTokenRewardBonusAmount() returns (uint256) {
+    uint256 RewardBonusAmount = voteRewardBonusMaxAmount * ((totalVoteCount / totalRegisteredVoters) ** 2); // Solidity rounds this value down to nearest integer
+    if (RewardBonusAmount > 0) {
+      return RewardBonusAmount;
+    } else {
+      return 1;
+    }
+  }
 }
