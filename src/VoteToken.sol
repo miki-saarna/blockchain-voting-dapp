@@ -3,7 +3,6 @@ pragma solidity ^0.8.23;
 
 import {IVote} from "./interfaces/IVote.sol";
 
-
 contract VoteToken is ERC20 {
 
   error VoteToken__Unauthorized();
