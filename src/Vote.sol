@@ -22,17 +22,17 @@ contract Vote {
 
   mapping(address owner => bool claimed) private claimedRewardBonus;
   mapping(address owner => bool voted) private ownerVoted;
-  mapping (uint256 candidateIdx => uint256 voteCount) public candidateIdxToVoteCount = {
-    0: 0,
-    1: 0,
-    2: 0
-  };
+  mapping (uint256 candidateIdx => uint256 voteCount) public candidateIdxToVoteCount;
 
   string[3] public candidates = ["Candidate 1", "Candidate 2", "Candidate 3"];
 
   constructor(IVoteToken _voteToken, IVault _voteVault) {
     voteToken = _voteToken;
     voteVault = _voteVault;
+
+    for (i = 0; i < candidates.length; i++) {
+      candidateIdxToVoteCount[i] = 0;
+    }
   }
 
   function castVote(uint256 candidateIdx) public {
