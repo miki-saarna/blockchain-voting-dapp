@@ -6,5 +6,5 @@ import {IVoteToken} from "./IVoteToken.sol";
 interface IVault {
   function vaultInitialized() external returns (bool);
 
-  function initVault(IVoteToken voteToken, address managerContract) public;
+  function initVault(IVoteToken voteToken, address managerContract) external;
 }
