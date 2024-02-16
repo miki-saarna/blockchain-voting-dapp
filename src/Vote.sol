@@ -13,22 +13,22 @@ contract Vote {
   error Vote__UserHasNotVoted;
   error Vote__UserAlreadyClaimedRewardBonus;
   
-  uint256 pollEndTime;
-  uint256 voteRewardAmount = 50;
-  uint256 voteRewardBonusAmount;
-  uint256 voteRewardBonusMaxAmount = 1000;
-  uint256 totalVoteCount = 0;
-  uint256 totalRegisteredVoters = 3000000;
+  uint256 public pollEndTime;
+  uint256 public voteRewardAmount = 50;
+  uint256 public voteRewardBonusAmount;
+  uint256 public voteRewardBonusMaxAmount = 1000;
+  uint256 public totalVoteCount = 0;
+  uint256 public totalRegisteredVoters = 3000000;
 
-  mapping(address owner => bool claimed) claimedRewardBonus;
-  mapping(address owner => uint256 candidateIdx) ownerToCandidateIdx;
-  mapping (uint256 candidateIdx => uint256 voteCount) candidateToVoteCounts = {
+  mapping(address owner => bool claimed) private claimedRewardBonus;
+  mapping(address owner => uint256 candidateIdx) private ownerToCandidateIdx;
+  mapping (uint256 candidateIdx => uint256 voteCount) public candidateIdxToVoteCount = {
     0: 0,
     1: 0,
     2: 0
   };
 
-  string[] public candidates = ["Candidate 1", "Candidate 2", "Candidate 3"];
+  string[3] public candidates = ["Candidate 1", "Candidate 2", "Candidate 3"];
 
   constructor(
     IVoteToken _voteToken,
@@ -39,6 +39,8 @@ contract Vote {
   }
 
   function castVote(uint256 candidateIdx) public {
+    // add functionality to confirm msg.sender is a registered voter
+
     if (pollEndTime) {
       revert Vote__PollClosed(pollEndTime);
     } else if (totalVoteCount == totalRegisteredVoters) {
@@ -47,7 +49,7 @@ contract Vote {
       revert Vote__UserAlreadyVoted(msg.sender, candidates[ownerToCandidateIdx[msg.sender]]);
     } else {
       ownerToCandidateIdx[msg.sender] = candidateIdx;
-      candidateToVoteCounts[candidateIdx] += 1;
+      candidateIdxToVoteCount[candidateIdx] += 1;
       totalVoteCount += 1;
 
       voteToken.transferFrom(address(voteVault), msg.sender, voteRewardAmount);
@@ -79,10 +81,10 @@ contract Vote {
     uint256 mostVotesCount = 0;
     uint256[] mostVotesIdx = [];
     for (uint i = 0; i < candidates.length; i++) {
-      if (candidateToVoteCounts[i] > mostVotesCount) {
-        mostVotesCount = candidateToVoteCounts[i]
+      if (candidateIdxToVoteCount[i] > mostVotesCount) {
+        mostVotesCount = candidateIdxToVoteCount[i]
         mostVotesIdx = [i];
-      } else if (candidateToVoteCounts[i] = mostVotesCount) {
+      } else if (candidateIdxToVoteCount[i] = mostVotesCount) {
         mostVotesIdx.push(i);
       }
     }
