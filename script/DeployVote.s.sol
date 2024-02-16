@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.23;
 
+import {Script} from "forge-std/Script.sol";
 import {Vote} from "../src/Vote.sol";
 import {VoteToken} from "../src/VoteToken.sol";
 import {Vault} from "../src/Vault.sol";
