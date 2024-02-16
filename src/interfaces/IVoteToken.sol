@@ -14,5 +14,5 @@ interface ILoveToken {
 
   function claim() external;
 
-  function initVault(address manager) external;
+  function initVault(address managerContract) external;
 }
