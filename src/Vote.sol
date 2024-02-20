@@ -68,6 +68,9 @@ contract Vote {
   }
 
   function endPoll() public {
+    if (pollEndTime != 0) {
+      revert Vote__PollClosed(pollEndTime);
+    }
     pollEndTime = block.timestamp;
     voteRewardBonusAmount = getTokenRewardBonusAmount();
   }
