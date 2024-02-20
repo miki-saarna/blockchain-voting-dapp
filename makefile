@@ -45,4 +45,12 @@ script :; forge script script/DeployVote.s.sol:DeployVote --rpc-url ${RPC_URL} -
 
 cast-vote :; cast send ${VOTE_ADDRESS} "castVote(uint256)" "${CANDIDATE_INDEX}" --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY_1}
 
-get_poll_current_results :; cast call ${VOTE_ADDRESS} "candidateIdxToVoteCount()" --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY_1}
+end-poll :; cast send ${VOTE_ADDRESS} "endPoll()" --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY_1}
+
+get-winners :; cast call ${VOTE_ADDRESS} "getWinners()" --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY_1}
+
+claim-reward-bonus :; cast send ${VOTE_ADDRESS} "claimRewardBonus()" --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY_1}
+
+check-if-sender-already-votes :; cast call ${VOTE_ADDRESS} "checkIfSenderAlreadyVoted()" --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY_1}
+
+# get-poll-current-results :; cast call ${VOTE_ADDRESS} "candidateIdxToVoteCount()" --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY_1}
