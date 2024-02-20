@@ -8,10 +8,16 @@ contract Vault {
   error Vault__AlreadyInitialized();
 
   bool public vaultInitialized;
+  VoteToken private voteToken;
 
-  function initVault(VoteToken voteToken, address managerContract) public {
+  function initVault(VoteToken _voteToken, address managerContract) public {
     if (vaultInitialized) revert Vault__AlreadyInitialized();
-    voteToken.initVault(managerContract);
+    voteToken = _voteToken;
+    _voteToken.initVault(managerContract);
     vaultInitialized = true;
+  }
+
+  function approve(address spender, uint256 amount) external returns (bool) {
+    return voteToken.approve(spender, amount);
   }
 }
