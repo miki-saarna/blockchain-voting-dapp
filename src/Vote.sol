@@ -118,6 +118,7 @@ contract Vote {
       revert Vote__UserAlreadyClaimedRewardBonus();
     } else {
       claimedRewardBonus[msg.sender] = true;
+      voteVault.approve(address(this), voteRewardBonusAmount);
       voteToken.transferFrom(address(voteVault), msg.sender, voteRewardBonusAmount);
     }
   }
