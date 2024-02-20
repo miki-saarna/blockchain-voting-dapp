@@ -43,6 +43,6 @@ aderyn :; aderyn .
 
 script :; forge script script/DeployVote.s.sol:DeployVote --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY_1} --broadcast
 
-cast-vote :; cast send ${VOTE_ADDRESS} "castVote(uint256)" "1" --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY_1}
+cast-vote :; cast send ${VOTE_ADDRESS} "castVote(uint256)" "${CANDIDATE_INDEX}" --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY_1}
 
 get_poll_current_results :; cast call ${VOTE_ADDRESS} "candidateIdxToVoteCount()" --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY_1}
