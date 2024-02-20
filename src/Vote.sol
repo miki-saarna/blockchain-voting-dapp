@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.23;
 
+import "forge-std/console.sol";
+
 // import {IVoteToken} from "./interfaces/IVoteToken.sol";
 // import {IVault} from "./interfaces/IVault.sol";
 import {VoteToken} from "./VoteToken.sol";
@@ -43,7 +45,8 @@ contract Vote {
   function castVote(uint256 candidateIdx) public {
     // add functionality to confirm msg.sender is a registered voter
 
-    if (pollEndTime == 0) {
+    // ensure `candidateIdx` is within range of candidates
+    if (pollEndTime != 0) {
       revert Vote__PollClosed(pollEndTime);
     } else if (totalVoteCount == totalRegisteredVoters) {
       revert Vote__AllRegisteredVotersAlreadyVoted(msg.sender);
@@ -51,11 +54,13 @@ contract Vote {
       revert Vote__UserAlreadyVoted(msg.sender);
     } else {
       ownerVoted[msg.sender] = true;
-      candidateIdxToVoteCount[candidateIdx] += 1;
-      totalVoteCount += 1;
+      candidateIdxToVoteCount[candidateIdx]++;
+      totalVoteCount++;
+
+      voteVault.approve(address(this), voteRewardAmount);
+      // uint256 allowed = voteToken.allowance(address(voteVault), address(this));
 
       voteToken.transferFrom(address(voteVault), msg.sender, voteRewardAmount);
-
       if (totalVoteCount == totalRegisteredVoters) {
         endPoll();
       }
