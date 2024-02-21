@@ -43,6 +43,3 @@ Assign environment variable to a value
     - `forge create <ContractName> --rpc-url <rpc-url> --private-key <private-key>`
 - `forge script` - complex, multi-contract deployments, init steps, or configurations
     - `forge script script/<DeploymentContract>.s.sol:<DeploymentContractFunction> --rpc-url <rpc-url> --private-key <private-key> --broadcast`
-
-<!-- onlyOnwer -->
-<!-- payable -->
