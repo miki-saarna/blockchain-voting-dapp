@@ -7,7 +7,6 @@ import {Script} from "forge-std/Script.sol";
 import {Vote} from "../src/Vote.sol";
 import {VoteToken} from "../src/VoteToken.sol";
 import {Vault} from "../src/Vault.sol";
-import {Candidates} from "../src/Candidates.sol";
 
 import {IVote} from "../src/interfaces/IVote.sol";
 import {IVoteToken} from "../src/interfaces/IVoteToken.sol";
