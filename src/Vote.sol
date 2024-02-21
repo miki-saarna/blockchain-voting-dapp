@@ -16,6 +16,7 @@ contract Vote {
   error Vote__AllRegisteredVotersAlreadyVoted(address owner);
   error Vote__UserHasNotVoted();
   error Vote__UserAlreadyClaimedRewardBonus();
+  error Vote__InvalidCandidateIndex(uint256 candidateIdx);
 
   VoteToken public immutable voteToken;
   Vault public immutable voteVault;
@@ -45,8 +46,9 @@ contract Vote {
   function castVote(uint256 candidateIdx) public {
     // add functionality to confirm msg.sender is a registered voter
 
-    // ensure `candidateIdx` is within range of candidates
-    if (pollEndTime != 0) {
+    if (candidateIdx > candidates.length - 1) {
+      revert Vote__InvalidCandidateIndex(candidateIdx);
+    } else if (pollEndTime != 0) {
       revert Vote__PollClosed(pollEndTime);
     } else if (totalVoteCount == totalRegisteredVoters) {
       revert Vote__AllRegisteredVotersAlreadyVoted(msg.sender);
