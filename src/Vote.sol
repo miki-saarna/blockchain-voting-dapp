@@ -32,11 +32,12 @@ contract Vote {
   mapping(address owner => bool claimed) private claimedRewardBonus;
   mapping (uint256 candidateIdx => uint256 voteCount) public candidateIdxToVoteCount;
 
-  string[3] public candidates = ["Candidate 1", "Candidate 2", "Candidate 3"];
+  string[] public candidates;
 
-  constructor(VoteToken _voteToken, Vault _voteVault) {
+  constructor(VoteToken _voteToken, Vault _voteVault, string[] memory _candidates) {
     voteToken = _voteToken;
     voteVault = _voteVault;
+    candidates = _candidates;
 
     for (uint256 i = 0; i < candidates.length; i++) {
       candidateIdxToVoteCount[i] = 0;
