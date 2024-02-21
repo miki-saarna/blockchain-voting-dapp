@@ -41,7 +41,7 @@ aderyn :; aderyn .
 
 # new custom commands
 
-script :; forge script script/DeployVote.s.sol:DeployVote --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY_1} --broadcast
+forge-script :; forge script script/DeployVote.s.sol:DeployVote --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY_1} --broadcast
 
 cast-vote :; cast send ${VOTE_ADDRESS} "castVote(uint256)" "${CANDIDATE_INDEX}" --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY_1}
 
