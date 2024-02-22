@@ -5,11 +5,11 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {IVote} from "./interfaces/IVote.sol";
 
 contract VoteToken is ERC20 {
-
   error VoteToken__Unauthorized();
-  event VoteVaultInitialized(address indexed voteVaultContract);
 
   address public immutable voteVault;
+
+  event VoteVaultInitialized(address indexed voteVaultContract);
 
   constructor(address _voteVault) ERC20("VoteToken", "VOTE") {
     voteVault = _voteVault;

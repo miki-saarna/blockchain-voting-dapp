@@ -34,6 +34,10 @@ contract Vote {
 
   string[] public candidates;
 
+  event VoteCast(address indexed voter, string candidateName);
+  event PollEnded(uint256 endTime);
+  event VoterClaimedRewardBonus(address indexed voter, uint256 rewardBonusAmount);
+
   constructor(VoteToken _voteToken, Vault _voteVault, string[] memory _candidates) {
     voteToken = _voteToken;
     voteVault = _voteVault;
@@ -62,8 +66,10 @@ contract Vote {
 
       voteVault.approve(address(this), voteRewardAmount);
       // uint256 allowed = voteToken.allowance(address(voteVault), address(this));
-
       voteToken.transferFrom(address(voteVault), msg.sender, voteRewardAmount);
+
+      emit VoteCast(msg.sender, candidates[candidateIdx]);
+
       if (totalVoteCount == totalRegisteredVoters) {
         endPoll();
       }
@@ -75,6 +81,8 @@ contract Vote {
       revert Vote__PollClosed(pollEndTime);
     }
     pollEndTime = block.timestamp;
+    emit PollEnded(pollEndTime);
+
     voteRewardBonusAmount = getTokenRewardBonusAmount();
   }
 
@@ -126,6 +134,7 @@ contract Vote {
       claimedRewardBonus[msg.sender] = true;
       voteVault.approve(address(this), voteRewardBonusAmount);
       voteToken.transferFrom(address(voteVault), msg.sender, voteRewardBonusAmount);
+      emit VoterClaimedRewardBonus(msg.sender, voteRewardBonusAmount);
     }
   }
 

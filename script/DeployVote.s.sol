@@ -13,9 +13,9 @@ import {IVoteToken} from "../src/interfaces/IVoteToken.sol";
 import {IVault} from "../src/interfaces/IVault.sol";
 
 contract DeployVote is Script {
-  event VoteContractDeployed(address indexed voteAddress);
-
   string[] public candidates = ["John Doe", "Janet Buchanan", "Lucca Isco"];
+
+  event VoteContractDeployed(address indexed voteAddress);
 
   function run() public {
     vm.startBroadcast();
