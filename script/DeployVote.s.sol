@@ -24,7 +24,7 @@ contract DeployVote is Script {
     VoteToken voteToken = new VoteToken(address(vault));
     vault.initVault(voteToken, address(this));
     Vote vote = new Vote(voteToken, vault, candidates);
-    // emit VoteContractDeployed(address(vote));
+    emit VoteContractDeployed(address(vote));
 
     vm.stopBroadcast();
   }
