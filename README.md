@@ -1,7 +1,10 @@
-Voting Smart Contract
+# Voting Smart Contract
 
-## Notes
-- added functionality to incentivize voting; incentive exponentially increases as more people vote
+## Contract notes
+- Added functionality to incentivize voting - incentive reward amount exponentially increases as more people vote
+
+## Documentation notes
+- Although Hardhat is a viable alternative, the following documentation assumes usage of Foundry's test suite
 
 ## Commands
 
