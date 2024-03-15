@@ -22,9 +22,9 @@ contract Vote {
   Vault public immutable voteVault;
   
   uint256 public pollEndTime;
-  uint256 public voteRewardAmount = 50;
+  uint256 public voteRewardAmount = 50 * 10 ** 18;
   uint256 public voteRewardBonusAmount;
-  uint256 public voteRewardBonusMaxAmount = 1000;
+  uint256 public voteRewardBonusMaxAmount = 1000 * 10 ** 18;
   uint256 public totalVoteCount = 0;
   uint256 public totalRegisteredVoters = 3000000;
 
@@ -116,7 +116,7 @@ contract Vote {
   function getTokenRewardBonusAmount() public view returns (uint256) {
     uint256 RewardBonusAmount = voteRewardBonusMaxAmount * ((totalVoteCount / totalRegisteredVoters) ** 2); // Solidity rounds this value down to nearest integer
     if (RewardBonusAmount == 0) {
-      return 1;
+      return 1 * 10 ** 18;
     } else {
       return RewardBonusAmount;
     }
