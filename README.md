@@ -1,5 +1,8 @@
 # Voting Smart Contract
 
+This smart contract is currently available to interact with by importing the following Gist ID into Remix: 44065bd0829da53415ed96732502d3b2
+
+
 ## Contract notes
 - Added functionality to incentivize voting - incentive reward amount exponentially increases as more people vote
 
