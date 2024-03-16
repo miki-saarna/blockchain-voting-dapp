@@ -21,6 +21,9 @@ contract Vote {
   VoteToken public immutable voteToken;
   Vault public immutable voteVault;
   
+  string[] public candidates;
+
+  uint256 public pollStartTime;
   uint256 public pollEndTime;
   uint256 public voteRewardAmount = 50 * 10 ** 18;
   uint256 public voteRewardBonusAmount;
@@ -32,23 +35,39 @@ contract Vote {
   mapping(address owner => bool claimed) private claimedRewardBonus;
   mapping (uint256 candidateIdx => uint256 voteCount) public candidateIdxToVoteCount;
 
-  string[] public candidates;
-
   event VoteCast(address indexed voter, string candidateName);
   event PollEnded(uint256 endTime);
   event VoterClaimedRewardBonus(address indexed voter, uint256 rewardBonusAmount);
 
-  constructor(VoteToken _voteToken, Vault _voteVault, string[] memory _candidates) {
+  constructor(VoteToken _voteToken, Vault _voteVault) {
     voteToken = _voteToken;
     voteVault = _voteVault;
-    candidates = _candidates;
+  }
 
+  modifier pollIsActive() {
+    require(pollStartTime != 0 && pollEndTime == 0, "The poll is inactive");
+    _;
+  }
+
+  function beginPoll(string[] memory _candidates) public {
+    candidates = _candidates;
     for (uint256 i = 0; i < candidates.length; i++) {
       candidateIdxToVoteCount[i] = 0;
     }
+    pollStartTime = block.timestamp;
   }
 
-  function castVote(uint256 candidateIdx) public {
+  function endPoll() public pollIsActive {
+    // if (pollEndTime != 0) {
+    //   revert Vote__PollClosed(pollEndTime);
+    // }
+    pollEndTime = block.timestamp;
+    emit PollEnded(pollEndTime);
+
+    voteRewardBonusAmount = getTokenRewardBonusAmount();
+  }
+
+  function castVote(uint256 candidateIdx) public pollIsActive {
     // add functionality to confirm msg.sender is a registered voter
 
     if (candidateIdx > candidates.length - 1) {
@@ -74,16 +93,6 @@ contract Vote {
         endPoll();
       }
     }
-  }
-
-  function endPoll() public {
-    if (pollEndTime != 0) {
-      revert Vote__PollClosed(pollEndTime);
-    }
-    pollEndTime = block.timestamp;
-    emit PollEnded(pollEndTime);
-
-    voteRewardBonusAmount = getTokenRewardBonusAmount();
   }
 
   function getWinners() external view returns (string[] memory) {
