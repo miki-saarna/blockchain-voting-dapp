@@ -4,13 +4,13 @@ pragma solidity ^0.8.23;
 import "forge-std/console.sol";
 
 import {Script} from "forge-std/Script.sol";
-import {Vote} from "../contracts/Vote.sol";
-import {VoteToken} from "../contracts/VoteToken.sol";
-import {Vault} from "../contracts/Vault.sol";
+import {Vote} from "../src/Vote.sol";
+import {VoteToken} from "../src/VoteToken.sol";
+import {Vault} from "../src/Vault.sol";
 
-import {IVote} from "../contracts/interfaces/IVote.sol";
-import {IVoteToken} from "../contracts/interfaces/IVoteToken.sol";
-import {IVault} from "../contracts/interfaces/IVault.sol";
+import {IVote} from "../src/interfaces/IVote.sol";
+import {IVoteToken} from "../src/interfaces/IVoteToken.sol";
+import {IVault} from "../src/interfaces/IVault.sol";
 
 contract DeployVote is Script {
   event VoteContractDeployed(address indexed voteAddress);
