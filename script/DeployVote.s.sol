@@ -13,9 +13,9 @@ import {IVoteToken} from "../src/interfaces/IVoteToken.sol";
 import {IVault} from "../src/interfaces/IVault.sol";
 
 contract DeployVote is Script {
-  string[] public candidates = ["John Doe", "Janet Buchanan", "Lucca Isco"];
-
   event VoteContractDeployed(address indexed voteAddress);
+
+  Vote vote;
 
   function run() public {
     vm.startBroadcast();
@@ -23,7 +23,7 @@ contract DeployVote is Script {
     Vault vault = new Vault();
     VoteToken voteToken = new VoteToken(address(vault));
     vault.initVault(voteToken, address(this));
-    Vote vote = new Vote(voteToken, vault, candidates);
+    vote = new Vote(voteToken, vault);
     emit VoteContractDeployed(address(vote));
 
     vm.stopBroadcast();
