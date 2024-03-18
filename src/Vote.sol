@@ -50,11 +50,22 @@ contract Vote {
   }
 
   function beginPoll(string[] memory _candidates) public {
+    for (uint i = 0; i < candidates.length; i++) {
+      delete candidateIdxToVoteCount[i]
+    }
     candidates = _candidates;
     for (uint256 i = 0; i < candidates.length; i++) {
       candidateIdxToVoteCount[i] = 0;
     }
     pollStartTime = block.timestamp;
+    pollEndTime = 0;
+    voteRewardBonusAmount = 0;
+    totalVoteCount = 0;
+    candidateIdxToVoteCount = {};
+
+    // RESET:
+    // ownerVoted
+    // claimedRewardBonus
   }
 
   function endPoll() public pollIsActive {
