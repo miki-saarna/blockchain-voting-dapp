@@ -25,11 +25,11 @@ contract Vote {
 
   uint256 public pollStartTime;
   uint256 public pollEndTime;
-  uint256 public voteRewardAmount = 50 * 10 ** 18;
+  uint256 public constant voteRewardAmount = 50 * 10 ** 18;
   uint256 public voteRewardBonusAmount;
-  uint256 public voteRewardBonusMaxAmount = 1000 * 10 ** 18;
+  uint256 public constant voteRewardBonusMaxAmount = 1000 * 10 ** 18;
   uint256 public totalVoteCount = 0;
-  uint256 public totalRegisteredVoters = 3000000;
+  uint256 public totalRegisteredVoters = 10;
 
   mapping(address owner => bool voted) private ownerVoted;
   mapping(address owner => bool claimed) private claimedRewardBonus;
