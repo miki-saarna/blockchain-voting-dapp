@@ -1,6 +1,7 @@
 // Add these lines at the top where you have other imports
 import React, { useState, useEffect } from 'react';
 import Header from './header/index';
+import Footer from './footer/index';
 import PollDetails from './details/pollDetails';
 import { getProvider, getSigner, getContract} from './utils/blockchainInteractions';
 
@@ -110,6 +111,7 @@ function App() {
       <button className="border border-gray-400 px-2 py-1 rounded ml-2" onClick={beginPoll}>Begin poll</button>
       <button className="border border-gray-400 px-2 py-1 rounded ml-2" onClick={fetchCandidates}>Get list of candidates</button>
       <button className="border border-gray-400 px-2 py-1 rounded ml-2" onClick={() => castVote(1)}>Vote for 2nd candidate</button>
+      <Footer />
     </div>
   );
 }
