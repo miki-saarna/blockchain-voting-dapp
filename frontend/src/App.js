@@ -1,14 +1,15 @@
 // Add these lines at the top where you have other imports
 import React, { useState, useEffect } from 'react';
-import { ethers } from 'ethers';
-import voteContractABI from './DeployVoteABI.json';
-import Test from './test/index'
+import PollDetails from './details/pollDetails'
+import { getProvider, getSigner, getContract} from './utils/blockchainInteractions';
 
 function App() {
   const [userAccount, setUserAccount] = useState(null);
   const [candidates, setCandidates] = useState([]);
   const [pollStartTime, setPollStartTime] = useState(null);
   const [pollEndTime, setPollEndTime] = useState(null);
+  const [voteCount, setVoteCount] = useState({});
+  const [winner, setWinner] = useState([]);
 
   // Connect to Metamask
   async function connectWallet() {
@@ -24,64 +25,59 @@ function App() {
     }
   }
 
-  function getProvider() {
-    const rpcUrl = process.env.REACT_APP_RPC_URL;
-    return new ethers.JsonRpcProvider(rpcUrl); // ethers.getDefaultProvider(rpcUrl)
-  }
-
-  function getSigner() {
-    const provider = getProvider();
-    const PRIVATE_KEY  = process.env.REACT_APP_PRIVATE_KEY;
-    const signer = new ethers.Wallet(PRIVATE_KEY, provider)
-    return signer
-  }
-
-  function getContract(providerOrSigner) {
-    const voteContractAddress = process.env.REACT_APP_VOTE_CONTRACT_ADDRESS;
-    return new ethers.Contract(voteContractAddress, voteContractABI, providerOrSigner);
-  }
-
-  // check on render:
   useEffect(() => {
-    const fetchDataFromContract = async () => {
-      try {
-        const signer = getSigner()
-        const contract = getContract(signer)
-        const startTime = await contract.pollStartTime()
-        setPollStartTime(startTime.toString());
-      } catch (err) {
-        console.error(err);
-      }
+    connectWallet();
+    fetchPollDetails();
+    fetchCandidates();
+    // Optional: Listen for account changes
+    window.ethereum.on('accountsChanged', () => connectWallet());
+  }, []);
+
+  const fetchPollDetails = async () => {
+    const provider = getProvider();
+    const contract = getContract(provider);
+    const startTime = await contract.pollStartTime();
+    const endTime = await contract.pollEndTime();
+    setPollStartTime(startTime.toString());
+    setPollEndTime(endTime.toString());
+  };
+
+  const fetchCandidates = async () => {
+    const provider = getProvider();
+    const contract = getContract(provider);
+    const candidatesLength = await contract.candidates.length; // Must create this func in smart contract
+    console.log(candidatesLength)
+    let candidatesList = [];
+    for (let i = 0; i < candidatesLength; i++) {
+      const candidate = await contract.candidates(i);
+      candidatesList.push(candidate);
     }
-    fetchDataFromContract()
-  }, [])
+    setCandidates(candidatesList);
+    console.log(candidates)
+  };
 
-  // async function getProviderOrSigner(needSigner = false) {
-  //   // const provider = new ethers.providers.Web3Provider(window.ethereum);
-  //   const provider = new ethers.JsonRpcProvider(rpcUrl); // ethers.getDefaultProvider(rpcUrl)
-  //   const { chainId } = await provider.getNetwork();
-  //   if (chainId !== 11155111n) {
-  //     console.error('Please connect to the Sepolia testnet');
-  //     return;
-  //   }
-  //   if (needSigner) {
-  //     console.log("provider.getSigner: ", provider.getSigner)
-  //     const signer = await provider.getSigner();
-  //     console.log(signer)
-  //     return signer;
-  //   }
-  //   return provider;
-  // }
+  async function beginPoll() {
+    const signer = getSigner()
+    const contract = getContract(signer)
 
-  async function getMaxBonusAmount() {
-    const provider = getProvider()
-    const contract = getContract(provider)
-    const amount = await contract.voteRewardBonusMaxAmount()
-    console.log("amount", amount)
-    return amount;
+    const exampleCandidates = ["jack", 'henz', 'lemon']
+
+    const tx = await contract.beginPoll(exampleCandidates)
+    console.log("tx", tx)
+    await tx.wait()
+    console.log('tx mined')
+    const startTime = await contract.pollStartTime();
+    setPollStartTime(startTime.toString());
+    setPollEndTime(0);
   }
 
-  // something wrong with this func
+  const endPoll = async () => {
+    const signer = await getSigner();
+    const contract = getContract(signer);
+    await contract.endPoll();
+  };
+
+  // // something wrong with this func
   async function getCandidatesList() {
     const provider = getProvider()
     const contract = getContract(provider)
@@ -90,20 +86,7 @@ function App() {
     return candidates;
   }
 
-  async function beginPoll() {
-    const signer = getSigner()
-    const contract = getContract(signer)
-
-    const exampleCandidates = ["jack", 'henz', 'lemon']
-    const tx = await contract.beginPoll(exampleCandidates)
-    console.log("tx", tx)
-    await tx.wait()
-    console.log('tx mined')
-    const startTime = await contract.pollStartTime()
-    setPollStartTime(startTime.toString());
-  }
-
-  async function vote(candidateIdx) {
+  async function castVote(candidateIdx) {
     const signer = getSigner()
     const contract = getContract(signer)
     const tx = await contract.castVote(candidateIdx)
@@ -115,20 +98,17 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Test
+        <PollDetails
           pollStartTime={pollStartTime}
           pollEndTime={pollEndTime}
+          candidates={candidates}
         />
 
         <p>Your account: {userAccount}</p>
-        <button onClick={connectWallet}>Connect to MetaMask</button>
-        <button onClick={getMaxBonusAmount}>Get max bonus amount</button>
-        <button onClick={beginPoll}>Begin poll</button>
-        <button onClick={getCandidatesList}>Get list of candidates</button>
-        <button onClick={() => vote(1)}>Vote for 2nd candidate</button>
-        {/* <button onClick={() => setCandidates(getCandidatesList())}>Set list of candidates</button> */}
-
-        {/* {candidates.map((candidate) => <div>{candidate}</div>)} */}
+        <button className="border border-gray-400 px-2 py-1 rounded" onClick={connectWallet}>Connect to MetaMask</button>
+        <button className="border border-gray-400 px-2 py-1 rounded ml-2" onClick={beginPoll}>Begin poll</button>
+        <button className="border border-gray-400 px-2 py-1 rounded ml-2" onClick={fetchCandidates}>Get list of candidates</button>
+        <button className="border border-gray-400 px-2 py-1 rounded ml-2" onClick={() => castVote(1)}>Vote for 2nd candidate</button>
       </header>
     </div>
   );
