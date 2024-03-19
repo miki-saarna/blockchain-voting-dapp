@@ -4,11 +4,9 @@ import { getProvider, getSigner, getContract} from '../utils/blockchainInteracti
 export default function Details({
   pollStartTime,
   pollEndTime,
-  candidates
 }: {
   pollStartTime: Date | null,
-  pollEndTime: Date | null,
-  candidates: any[]
+  pollEndTime: Date | null
 }) {
 
   const [voteRewardAmount, setVoteRewardAmount] = useState(0);
@@ -41,9 +39,7 @@ export default function Details({
       {/* candidates
       candidateIdxToVoteCount
       getWinners */}
-      <ul>
-        {candidates.map((candidate) => <li>{candidate}</li>)}
-      </ul>
+      
       {/*
       totalRegisteredVoters
       totalVoteCount
