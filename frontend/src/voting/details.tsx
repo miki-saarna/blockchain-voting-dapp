@@ -29,32 +29,24 @@ export default function Details({
   }, [])
 
   return (
-    <div className="p-3 border border-red-300 rounded-md">
+    <div className="p-3 border border-red-300 rounded-md text-sm">
       <div>
-        <div>Status: {pollStartTime && !pollEndTime ? 'active' : 'inactive'}</div>
-        <div>pollStartTime: {pollStartTime ? pollStartTime?.toString() : 'Not set'}</div>
-        <div>pollEndTime: {pollEndTime ? pollEndTime?.toString() : 'Not set'}</div>
+        <div><span className="font-bold">Status:</span> {pollStartTime && !pollEndTime ? 'active' : 'inactive'}</div>
+        <div><span className="font-bold">Start time:</span> {pollStartTime ? pollStartTime?.toString() : 'Not set'}</div>
+        <div><span className="font-bold">End time:</span> {pollEndTime ? pollEndTime?.toString() : 'Not set'}</div>
       </div>
 
-      {/* candidates
-      candidateIdxToVoteCount
-      getWinners */}
-      
       {/*
+      getWinners
       totalRegisteredVoters
       totalVoteCount
-
       ownerVoted
       checkIfSenderAlreadyVoted
       */}
-
-      {/* voteRewardAmount
-      claimedRewardBonus
-      getTokenRewardBonusAmount */}
       <div>
-        <div>{voteRewardAmount}</div>
-        <div>{voteRewardBonusAmount}</div>
-        <div>{maxBonusAmount}</div>
+        <div><span className="font-bold">Vote reward amount:</span> {voteRewardAmount}</div>
+        <div><span className="font-bold">Vote reward bonus amount:</span> {voteRewardBonusAmount}</div>
+        <div><span className="font-bold">Vote reward max bonus amount:</span> {maxBonusAmount}</div>
       </div>
 
     </div>

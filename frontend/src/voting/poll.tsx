@@ -64,7 +64,11 @@ export default function Poll(): JSX.Element {
 
   return (
     <div className="p-3 border border-red-300 rounded-md">
-      Poll component
+      {/*
+      candidates
+      candidateIdxToVoteCount
+      getWinners
+      */}
       <button className="border border-gray-400 px-2 py-1 rounded ml-2" onClick={beginPoll}>Begin poll</button>
       <button className="border border-gray-400 px-2 py-1 rounded ml-2" onClick={() => castVote(1)}>Vote for 2nd candidate</button>
 
