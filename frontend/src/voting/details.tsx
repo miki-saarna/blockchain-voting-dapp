@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { getProvider, getSigner, getContract} from '../utils/blockchainInteractions';
 
-export default function Test({
+export default function Details({
   pollStartTime,
   pollEndTime,
   candidates
+}: {
+  pollStartTime: Date | null,
+  pollEndTime: Date | null,
+  candidates: any[]
 }) {
 
   const [voteRewardAmount, setVoteRewardAmount] = useState(0);
@@ -14,12 +18,12 @@ export default function Test({
   const setMaxBonusAmountFunc = async () => {
     const provider = getProvider()
     const contract = getContract(provider)
-    const amount0 = await contract.voteRewardAmount()
-    const amount1 = await contract.voteRewardBonusAmount()
-    const amount2 = await contract.voteRewardBonusMaxAmount()
-    setVoteRewardAmount(amount0.toString())
-    setVoteRewardBonusAmount(amount1.toString())
-    setMaxBonusAmount(amount2.toString())
+    const voteRewardAmount = await contract.voteRewardAmount()
+    const voteRewardBonusAmount = await contract.voteRewardBonusAmount()
+    const voteRewardBonusMaxAmount = await contract.voteRewardBonusMaxAmount()
+    setVoteRewardAmount(voteRewardAmount.toString())
+    setVoteRewardBonusAmount(voteRewardBonusAmount.toString())
+    setMaxBonusAmount(voteRewardBonusMaxAmount.toString())
   }
 
   useEffect(() => {
@@ -27,11 +31,11 @@ export default function Test({
   }, [])
 
   return (
-    <div className="border border-red-300">
+    <div className="p-3 border border-red-300 rounded-md">
       <div>
         <div>Status: {pollStartTime && !pollEndTime ? 'active' : 'inactive'}</div>
-        <div>pollStartTime: {pollStartTime}</div>
-        <div>pollEndTime: {pollEndTime}</div>
+        <div>pollStartTime: {pollStartTime ? pollStartTime?.toString() : 'Not set'}</div>
+        <div>pollEndTime: {pollEndTime ? pollEndTime?.toString() : 'Not set'}</div>
       </div>
 
       {/* candidates
