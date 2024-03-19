@@ -4,11 +4,7 @@ import Poll from './poll';
 import Rewards from './rewards';
 import { getProvider, getSigner, getContract} from '../utils/blockchainInteractions';
 
-export default function Voting({
-  candidates
-}: {
-  candidates: any
-}): JSX.Element {
+export default function Voting(): JSX.Element {
 
   const [pollStartTime, setPollStartTime] = useState<Date | null>(null);
   const [pollEndTime, setPollEndTime] = useState<Date | null>(null);
@@ -31,9 +27,6 @@ export default function Voting({
 
   useEffect(() => {
     fetchPollDetails();
-    // fetchCandidates();
-    // Optional: Listen for account changes
-    // window.ethereum.on('accountsChanged', () => connectWallet());
   }, []);
 
 
@@ -42,7 +35,6 @@ export default function Voting({
       <Details
         pollStartTime={pollStartTime}
         pollEndTime={pollEndTime}
-        candidates={candidates}
       />
       <Poll />
       <Rewards />
