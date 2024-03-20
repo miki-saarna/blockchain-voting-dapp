@@ -50,7 +50,7 @@ export default function Details({
   }, [])
 
   return (
-    <div className="flex flex-col divide-y p-3 border border-red-300 rounded-md text-sm">
+    <div className="flex flex-col divide-y p-3 bg-white border border-darkSage rounded-md text-sm">
       <div className="pb-3">
         <div><span className="font-bold">Status:</span> {pollStartTime && !pollEndTime ? 'active' : 'inactive'}</div>
         <div><span className="font-bold">Start time:</span> {pollStartTime ? convertBigIntToDate(pollStartTime)?.toString() : 'Not set'}</div>

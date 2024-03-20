@@ -100,7 +100,7 @@ export default function Poll({
   }, [candidates]);
 
   return (
-    <div className="p-3 border border-red-300 rounded-md">
+    <div className="p-3 bg-white border border-darkSage rounded-md">
       <Button
         onClick={beginPoll}
         className="w-fit bg-gray-800 font-bold"
