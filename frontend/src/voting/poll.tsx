@@ -6,19 +6,23 @@ export default function Poll({
   isPollActive,
   setPollStartTime,
   setPollEndTime,
+  checkIfSenderAlreadyVoted,
   setCheckIfSenderAlreadyVoted
 }: {
   isPollActive: boolean,
   setPollStartTime: Function,
   setPollEndTime: Function,
+  checkIfSenderAlreadyVoted: boolean,
   setCheckIfSenderAlreadyVoted: Function
 }): JSX.Element {
 
   const [candidates, setCandidates] = useState<any[]>([]);
   const [candidateVoteCount, setCandidateVoteCount] = useState<any[]>([]);
   const [winners, setWinners] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>()
 
   async function beginPoll() {
+    setIsLoading(true)
     const signer = getSigner()
     const contract = getContract(signer)
 
@@ -33,9 +37,11 @@ export default function Poll({
     setPollEndTime(null);
     await getCandidateVoteCount()
     setWinners([])
+    setIsLoading(false)
   }
 
   const endPoll = async () => {
+    setIsLoading(true)
     const signer = await getSigner();
     const contract = getContract(signer);
     await contract.endPoll();
@@ -44,6 +50,7 @@ export default function Poll({
     setPollEndTime(endTime.toString());
 
     await getWinners();
+    setIsLoading(false)
   };
 
   const getWinners = async () => {
@@ -68,6 +75,7 @@ export default function Poll({
 
   async function submitVote(e: Event): Promise<void> {
     e.preventDefault();
+    setIsLoading(true)
     const formEl: any = document.getElementById('pollForm');
     const selectedIdx: number = Number(formEl.elements["poll"].value);
 
@@ -80,6 +88,7 @@ export default function Poll({
 
     candidateVoteCount[selectedIdx]++
     setCheckIfSenderAlreadyVoted(true);
+    setIsLoading(false)
   }
 
   const getCandidateVoteCount = async(): Promise<any> => {
@@ -108,8 +117,8 @@ export default function Poll({
       <div className="p-3 divide-y divide-sage-dark text-sm">
         <div className="pb-3">
           {isPollActive
-            ? <Button onClick={endPoll} className="w-fit bg-teal border border-sage-dark font-bold">End poll</Button>
-            : <Button onClick={beginPoll} className="w-fit bg-teal border border-sage-dark font-bold">Initiate new poll</Button>
+            ? <Button disabled={isLoading} onClick={endPoll} className="w-fit bg-teal border border-sage-dark font-bold disabled:bg-teal/50 disabled:border-sage-dark/50 disabled:text-sage-dark/50 disabled:cursor-not-allowed">End poll</Button>
+            : <Button disabled={isLoading} onClick={beginPoll} className="w-fit bg-teal border border-sage-dark font-bold disabled:bg-teal/50 disabled:border-sage-dark/50 disabled:text-sage-dark/50 disabled:cursor-not-allowed">Initiate new poll</Button>
           }
         </div>
 
@@ -122,7 +131,7 @@ export default function Poll({
           </ul>
         </div>
 
-        {isPollActive &&
+        {isPollActive && !checkIfSenderAlreadyVoted &&
           <form id="pollForm" className={`${winners.length ? 'py-3' : 'pt-3'}`}>
             <fieldset>
               <legend className="mb-1 font-bold">Please select a candidate:</legend>
@@ -134,8 +143,9 @@ export default function Poll({
               )}
             </fieldset>
             <Button
+              disabled={isLoading}
               onClick={submitVote}
-              className="mt-3 w-fit bg-zest border border-sage-dark font-bold"
+              className="mt-3 w-fit bg-zest border border-sage-dark font-bold disabled:bg-teal/50 disabled:border-sage-dark/50 disabled:text-sage-dark/50 disabled:cursor-not-allowed"
             >
               Submit vote
             </Button>

@@ -8,9 +8,8 @@ export default function Voting(): JSX.Element {
 
   const [pollStartTime, setPollStartTime] = useState<BigInt | null>(null);
   const [pollEndTime, setPollEndTime] = useState<BigInt | null>(null);
-  const [checkIfSenderAlreadyVoted, setCheckIfSenderAlreadyVoted] = useState(false);
-
-  const [isPollActive, setIsPollActive] = useState(false)
+  const [isPollActive, setIsPollActive] = useState<boolean>(false)
+  const [checkIfSenderAlreadyVoted, setCheckIfSenderAlreadyVoted] = useState<boolean>(false);
 
   const fetchPollDetails = async () => {
     const provider = getProvider();
@@ -42,6 +41,7 @@ export default function Voting(): JSX.Element {
         isPollActive={isPollActive}
         setPollStartTime={setPollStartTime}
         setPollEndTime={setPollEndTime}
+        checkIfSenderAlreadyVoted={checkIfSenderAlreadyVoted}
         setCheckIfSenderAlreadyVoted={setCheckIfSenderAlreadyVoted}
       />
       {/* <Rewards /> */}
