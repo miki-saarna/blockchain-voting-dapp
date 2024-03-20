@@ -160,5 +160,9 @@ contract Vote {
   function checkIfSenderAlreadyVoted() external view returns (bool) {
     return ownerVoted[msg.sender];
   }
+
+  function getNumberOfCandidates() public view returns (uint256) {
+    return candidates.length;
+  }
 }
 
