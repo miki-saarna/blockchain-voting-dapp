@@ -38,6 +38,9 @@ export default function Poll({
     const contract = getContract(signer);
     await contract.endPoll();
 
+    const endTime = await contract.pollStartTime();
+    setPollEndTime(endTime.toString());
+
     await getWinners();
   };
 
