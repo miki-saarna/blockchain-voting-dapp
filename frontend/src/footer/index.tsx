@@ -2,7 +2,7 @@ import { JSX } from 'react';
 
 export default function Header(): JSX.Element {
   return (
-    <footer className="max-w-2xl lg:max-w-6xl py-12 px-6 lg:px-12">
+    <footer className="max-w-2xl lg:max-w-6xl mx-auto w-full py-12 px-6 lg:px-12">
       <a
         href="https://github.com/miki-saarna/blockchain-voting-dapp"
         target="_blank"

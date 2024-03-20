@@ -24,7 +24,7 @@ export default function MetaMaskInteractions() {
   }, []);
 
   return (
-    <div className="max-w-2xl lg:max-w-6xl flex flex-col mt-6 px-6 lg:px-12">
+    <div className="max-w-2xl lg:max-w-6xl flex flex-col mx-auto w-full mt-6 px-6 lg:px-12">
       <Button
         onClick={connectWallet}
         className="w-fit bg-teal border border-sage-dark font-bold"

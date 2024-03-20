@@ -32,7 +32,7 @@ export default function Voting(): JSX.Element {
 
 
   return (
-    <main className="grow max-w-2xl lg:max-w-6xl flex flex-col space-y-6 mt-6 px-6 lg:px-12">
+    <main className="grow max-w-2xl lg:max-w-6xl flex flex-col space-y-6 mx-auto w-full mt-6 px-6 lg:px-12">
       <Details
         pollStartTime={pollStartTime}
         pollEndTime={pollEndTime}
