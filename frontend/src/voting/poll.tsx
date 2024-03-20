@@ -122,7 +122,7 @@ export default function Poll({
           <div className="mb-1 font-bold">Polling results:</div>
           <ul>
             {candidateVoteCount.map((count, idx) =>
-            <li>{candidates[idx]}: {count ? count : 0}</li>
+            <li key={idx}>{candidates[idx]}: {count ? count : 0}</li>
             )}
           </ul>
         </div>
@@ -131,7 +131,7 @@ export default function Poll({
           <fieldset>
             <legend className="mb-1 font-bold">Please select a candidate:</legend>
             {candidates.map((candidate, idx) =>
-              <div>
+              <div key={idx}>
                 <input type="radio" id={candidate} name="poll" value={idx} />
                 <label htmlFor={candidate} className="ml-1">{candidate}</label>
               </div>
