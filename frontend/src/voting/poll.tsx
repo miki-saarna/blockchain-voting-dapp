@@ -1,5 +1,6 @@
 import { JSX, useState, useEffect } from 'react';
 import { getProvider, getSigner, getContract} from '../utils/blockchainInteractions';
+import Button from '../components/button';
 
 export default function Poll(): JSX.Element {
   const [pollStartTime, setPollStartTime] = useState<number>(0);
@@ -69,9 +70,18 @@ export default function Poll(): JSX.Element {
       candidateIdxToVoteCount
       getWinners
       */}
-      <button className="border border-gray-400 px-2 py-1 rounded ml-2" onClick={beginPoll}>Begin poll</button>
-      <button className="border border-gray-400 px-2 py-1 rounded ml-2" onClick={() => castVote(1)}>Vote for 2nd candidate</button>
-
+      <Button
+        onClick={beginPoll}
+        className="w-fit bg-gray-800 font-bold"
+      >
+        Begin poll
+      </Button>
+      <Button
+        onClick={() => castVote(1)}
+        className="w-fit bg-gray-800 font-bold"
+      >
+        Vote for 2nd candidate
+      </Button>
       <ul>
         {candidates.map((candidate) => <li>{candidate}</li>)}
       </ul>
