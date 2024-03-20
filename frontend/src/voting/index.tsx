@@ -8,6 +8,7 @@ export default function Voting(): JSX.Element {
 
   const [pollStartTime, setPollStartTime] = useState<BigInt | null>(null);
   const [pollEndTime, setPollEndTime] = useState<BigInt | null>(null);
+  const [checkIfSenderAlreadyVoted, setCheckIfSenderAlreadyVoted] = useState(false);
 
   const fetchPollDetails = async () => {
     const provider = getProvider();
@@ -35,11 +36,13 @@ export default function Voting(): JSX.Element {
       <Details
         pollStartTime={pollStartTime}
         pollEndTime={pollEndTime}
-
+        checkIfSenderAlreadyVoted={checkIfSenderAlreadyVoted}
+        setCheckIfSenderAlreadyVoted={setCheckIfSenderAlreadyVoted}
       />
       <Poll
         setPollStartTime={setPollStartTime}
         setPollEndTime={setPollEndTime}
+        setCheckIfSenderAlreadyVoted={setCheckIfSenderAlreadyVoted}
       />
       <Rewards />
     </main>

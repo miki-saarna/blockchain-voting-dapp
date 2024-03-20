@@ -4,10 +4,12 @@ import Button from '../components/button';
 
 export default function Poll({
   setPollStartTime,
-  setPollEndTime
+  setPollEndTime,
+  setCheckIfSenderAlreadyVoted
 }: {
   setPollStartTime: Function,
-  setPollEndTime: Function
+  setPollEndTime: Function,
+  setCheckIfSenderAlreadyVoted: Function
 }): JSX.Element {
 
   const [candidates, setCandidates] = useState<any[]>([]);
@@ -71,8 +73,7 @@ export default function Poll({
     console.log('tx mined')
 
     candidateVoteCount[selectedIdx]++
-
-
+    setCheckIfSenderAlreadyVoted(true);
   }
 
   const getCandidateVoteCount = async(): Promise<any> => {

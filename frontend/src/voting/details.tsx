@@ -4,17 +4,22 @@ import { getProvider, getSigner, getContract} from '../utils/blockchainInteracti
 export default function Details({
   pollStartTime,
   pollEndTime,
+  checkIfSenderAlreadyVoted,
+  setCheckIfSenderAlreadyVoted
 }: {
   pollStartTime: BigInt | null,
-  pollEndTime: BigInt | null
+  pollEndTime: BigInt | null,
+  checkIfSenderAlreadyVoted: boolean,
+  setCheckIfSenderAlreadyVoted: Function
 }) {
+
+  const divider: number = 1000000000000000000;
 
   const [voteRewardAmount, setVoteRewardAmount] = useState(0);
   const [voteRewardBonusAmount, setVoteRewardBonusAmount] = useState(0);
   const [maxBonusAmount, setMaxBonusAmount] = useState(0);
   const [totalRegisteredVoters, setTotalRegisteredVoters] = useState(0);
   const [totalVoteCount, setTotalVoteCount] = useState(0);
-  const [checkIfSenderAlreadyVoted, setCheckIfSenderAlreadyVoted] = useState(false);
 
   const setMaxBonusAmountFunc = async () => {
     const provider = getProvider()
@@ -52,9 +57,9 @@ export default function Details({
         <div><span className="font-bold">End time:</span> {pollEndTime ? convertBigIntToDate(pollEndTime)?.toString() : 'Not set'}</div>
       </div>
       <div className="py-3">
-        <div><span className="font-bold">Vote reward amount:</span> {voteRewardAmount}</div>
-        <div><span className="font-bold">Vote reward bonus amount:</span> {voteRewardBonusAmount}</div>
-        <div><span className="font-bold">Vote reward max bonus amount:</span> {maxBonusAmount}</div>
+        <div><span className="font-bold">Vote reward amount:</span> {voteRewardAmount / divider}</div>
+        <div><span className="font-bold">Vote reward bonus amount:</span> {voteRewardBonusAmount / divider}</div>
+        <div><span className="font-bold">Vote reward max bonus amount:</span> {maxBonusAmount / divider}</div>
       </div>
       <div className="pt-3">
         <div><span className="font-bold">Total registered voters:</span> {totalRegisteredVoters}</div>
