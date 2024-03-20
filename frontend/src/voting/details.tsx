@@ -21,7 +21,7 @@ export default function Details({
   const [totalRegisteredVoters, setTotalRegisteredVoters] = useState(0);
   const [totalVoteCount, setTotalVoteCount] = useState(0);
 
-  const setMaxBonusAmountFunc = async () => {
+  const fetchData = async () => {
     const provider = getProvider()
     const contract = getContract(provider)
     const voteRewardAmount = await contract.voteRewardAmount()
@@ -46,7 +46,7 @@ export default function Details({
   }
 
   useEffect(() => {
-    setMaxBonusAmountFunc();
+    fetchData();
   }, [])
 
   return (
