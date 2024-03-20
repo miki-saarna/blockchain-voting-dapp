@@ -5,8 +5,8 @@ export default function Details({
   pollStartTime,
   pollEndTime,
 }: {
-  pollStartTime: Date | null,
-  pollEndTime: Date | null
+  pollStartTime: BigInt | null,
+  pollEndTime: BigInt | null
 }) {
 
   const [voteRewardAmount, setVoteRewardAmount] = useState(0);
@@ -33,6 +33,13 @@ export default function Details({
     setCheckIfSenderAlreadyVoted(checkIfSenderAlreadyVoted)
   }
 
+  function convertBigIntToDate(bigInt: BigInt): Date | null {
+    const timestamp = Number(bigInt);
+    if (!timestamp) return null
+    const date = new Date(timestamp * 1000);
+    return date
+  }
+
   useEffect(() => {
     setMaxBonusAmountFunc();
   }, [])
@@ -41,8 +48,8 @@ export default function Details({
     <div className="flex flex-col divide-y p-3 border border-red-300 rounded-md text-sm">
       <div className="pb-3">
         <div><span className="font-bold">Status:</span> {pollStartTime && !pollEndTime ? 'active' : 'inactive'}</div>
-        <div><span className="font-bold">Start time:</span> {pollStartTime ? pollStartTime?.toString() : 'Not set'}</div>
-        <div><span className="font-bold">End time:</span> {pollEndTime ? pollEndTime?.toString() : 'Not set'}</div>
+        <div><span className="font-bold">Start time:</span> {pollStartTime ? convertBigIntToDate(pollStartTime)?.toString() : 'Not set'}</div>
+        <div><span className="font-bold">End time:</span> {pollEndTime ? convertBigIntToDate(pollEndTime)?.toString() : 'Not set'}</div>
       </div>
       <div className="py-3">
         <div><span className="font-bold">Vote reward amount:</span> {voteRewardAmount}</div>

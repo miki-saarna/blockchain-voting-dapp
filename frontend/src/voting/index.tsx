@@ -6,24 +6,24 @@ import { getProvider, getSigner, getContract} from '../utils/blockchainInteracti
 
 export default function Voting(): JSX.Element {
 
-  const [pollStartTime, setPollStartTime] = useState<Date | null>(null);
-  const [pollEndTime, setPollEndTime] = useState<Date | null>(null);
+  const [pollStartTime, setPollStartTime] = useState<BigInt | null>(null);
+  const [pollEndTime, setPollEndTime] = useState<BigInt | null>(null);
 
   const fetchPollDetails = async () => {
     const provider = getProvider();
     const contract = getContract(provider);
     const startTime = await contract.pollStartTime();
     const endTime = await contract.pollEndTime();
-    setPollStartTime(convertBigIntToDate(startTime));
-    setPollEndTime(convertBigIntToDate(endTime));
+    setPollStartTime(startTime);
+    setPollEndTime(endTime);
   };
 
-  function convertBigIntToDate(bigInt: BigInt): Date | null {
-    const timestamp = Number(bigInt);
-    if (!timestamp) return null
-    const date = new Date(timestamp * 1000);
-    return date
-  }
+  // function convertBigIntToDate(bigInt: BigInt): Date | null {
+  //   const timestamp = Number(bigInt);
+  //   if (!timestamp) return null
+  //   const date = new Date(timestamp * 1000);
+  //   return date
+  // }
 
   useEffect(() => {
     fetchPollDetails();
@@ -35,8 +35,12 @@ export default function Voting(): JSX.Element {
       <Details
         pollStartTime={pollStartTime}
         pollEndTime={pollEndTime}
+
       />
-      <Poll />
+      <Poll
+        setPollStartTime={setPollStartTime}
+        setPollEndTime={setPollEndTime}
+      />
       <Rewards />
     </main>
   )

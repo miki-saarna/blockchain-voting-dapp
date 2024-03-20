@@ -2,9 +2,13 @@ import { JSX, useState, useEffect } from 'react';
 import { getProvider, getSigner, getContract} from '../utils/blockchainInteractions';
 import Button from '../components/button';
 
-export default function Poll(): JSX.Element {
-  const [pollStartTime, setPollStartTime] = useState<number>(0);
-  const [pollEndTime, setPollEndTime] = useState<number>(0);
+export default function Poll({
+  setPollStartTime,
+  setPollEndTime
+}: {
+  setPollStartTime: Function,
+  setPollEndTime: Function
+}): JSX.Element {
 
   const [candidates, setCandidates] = useState<any[]>([]);
   const [candidateVoteCount, setCandidateVoteCount] = useState<any[]>([]);
@@ -22,7 +26,9 @@ export default function Poll(): JSX.Element {
     console.log('tx mined')
     const startTime = await contract.pollStartTime();
     setPollStartTime(startTime.toString());
-    setPollEndTime(0);
+    setPollEndTime(null);
+    await getCandidateVoteCount()
+    setWinners([])
   }
 
   const endPoll = async () => {
@@ -63,6 +69,10 @@ export default function Poll(): JSX.Element {
     console.log("tx", tx)
     await tx.wait()
     console.log('tx mined')
+
+    candidateVoteCount[selectedIdx]++
+
+
   }
 
   const getCandidateVoteCount = async(): Promise<any> => {
@@ -71,7 +81,7 @@ export default function Poll(): JSX.Element {
 
     const voteCount = candidates.map(async (_, idx) => {
       const voteCount: number = await contract.candidateIdxToVoteCount(idx)
-      return voteCount;
+      return Number(voteCount);
     })
     const candidateVoteCount = await Promise.all(voteCount);
     setCandidateVoteCount(candidateVoteCount)
@@ -131,7 +141,7 @@ export default function Poll(): JSX.Element {
         </Button>
       </form>
 
-      {winners.length && <div>Winner: {winners}</div>}
+      {winners.length ? <div>Winner: {winners.join(', ')}</div> : null}
     </div>
   )
 }
