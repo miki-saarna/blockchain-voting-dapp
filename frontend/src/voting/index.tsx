@@ -44,7 +44,7 @@ export default function Voting(): JSX.Element {
         setPollEndTime={setPollEndTime}
         setCheckIfSenderAlreadyVoted={setCheckIfSenderAlreadyVoted}
       />
-      <Rewards />
+      {/* <Rewards /> */}
     </main>
   )
 }
