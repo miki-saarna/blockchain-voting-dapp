@@ -27,7 +27,7 @@ export default function MetaMaskInteractions() {
     <div className="max-w-2xl lg:max-w-6xl flex flex-col space-y-6 p-6 lg:px-12">
       <Button
         onClick={connectWallet}
-        className="w-fit bg-teal border border-darkSage font-bold"
+        className="w-fit bg-teal border border-sage-dark font-bold"
       >
         Connect to MetaMask
       </Button>

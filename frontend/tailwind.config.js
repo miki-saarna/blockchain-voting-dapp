@@ -8,10 +8,13 @@ module.exports = {
     extend: {
       colors: {
         sand: "#f5f2eb",
-        darkSage: "#4c797c",
-        sage: "#BCB88A",
         zest: "#ffc000",
-        teal: "#00c2b8"
+        teal: "#00c2b8",
+        sage: {
+          dark: "#04454d",
+          light: "#BCB88A",
+          DEFAULT: "#4c797c",
+        },
       },
     },
   },

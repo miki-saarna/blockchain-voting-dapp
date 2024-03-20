@@ -100,16 +100,16 @@ export default function Poll({
   }, [candidates]);
 
   return (
-    <div className="p-3 bg-white border border-darkSage rounded-md">
+    <div className="p-3 bg-white border border-sage-dark rounded-md">
       <Button
         onClick={beginPoll}
-        className="w-fit bg-teal border border-darkSage font-bold"
+        className="w-fit bg-teal border border-sage-dark font-bold"
       >
         Begin poll
       </Button>
       <Button
         onClick={endPoll}
-        className="w-fit bg-teal border border-darkSage font-bold"
+        className="w-fit bg-teal border border-sage-dark font-bold"
       >
         End poll
       </Button>
@@ -139,7 +139,7 @@ export default function Poll({
 
         <Button
           onClick={submitVote}
-          className="w-fit bg-zest border border-darkSage font-bold"
+          className="w-fit bg-zest border border-sage-dark font-bold"
         >
           Submit vote
         </Button>

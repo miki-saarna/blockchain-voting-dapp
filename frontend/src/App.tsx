@@ -13,7 +13,7 @@ function App(): JSX.Element {
   }, [])
 
   return (
-    <div className="App flex flex-col min-h-screen">
+    <div className="App flex flex-col min-h-screen text-sage-dark">
       <Header />
       <Intro />
       <MetaMaskInteractions />
