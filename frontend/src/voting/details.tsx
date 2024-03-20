@@ -53,17 +53,17 @@ export default function Details({
     <div className="bg-white border border-sage-dark rounded-md overflow-hidden">
       <div className="p-3 text-lg font-bold bg-sand border-b border-sage-dark">Details</div>
       <div className="p-3 divide-y divide-sage-dark text-sm">
-        <div className="pb-2">
+        <div className="pb-3">
           <div><span className="font-bold">Status:</span> {pollStartTime && !pollEndTime ? 'active' : 'inactive'}</div>
           <div><span className="font-bold">Start time:</span> {pollStartTime ? convertBigIntToDate(pollStartTime)?.toString() : 'Not set'}</div>
           <div><span className="font-bold">End time:</span> {pollEndTime ? convertBigIntToDate(pollEndTime)?.toString() : 'Not set'}</div>
         </div>
-        <div className="py-2">
+        <div className="py-3">
           <div><span className="font-bold">Vote reward amount:</span> {voteRewardAmount / divider}</div>
           <div><span className="font-bold">Vote reward bonus amount:</span> {voteRewardBonusAmount / divider}</div>
           <div><span className="font-bold">Vote reward max bonus amount:</span> {maxBonusAmount / divider}</div>
         </div>
-        <div className="pt-2">
+        <div className="pt-3">
           <div><span className="font-bold">Total registered voters:</span> {totalRegisteredVoters}</div>
           <div><span className="font-bold">Total vote count:</span> {totalVoteCount}</div>
           <div><span className="font-bold">Already voted:</span> {checkIfSenderAlreadyVoted ? 'true' : 'false'}</div>

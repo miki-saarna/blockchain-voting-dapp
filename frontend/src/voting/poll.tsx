@@ -103,7 +103,7 @@ export default function Poll({
     <div className="bg-white border border-sage-dark rounded-md overflow-hidden">
       <div className="p-3 text-lg font-bold bg-sand border-b border-sage-dark">Poll</div>
       <div className="p-3 divide-y divide-sage-dark text-sm">
-        <div className="pb-2">
+        <div className="pb-3">
           <Button
             onClick={beginPoll}
             className="w-fit bg-teal border border-sage-dark font-bold"
@@ -112,13 +112,13 @@ export default function Poll({
           </Button>
           <Button
             onClick={endPoll}
-            className="ml-2 w-fit bg-teal border border-sage-dark font-bold"
+            className="ml-3 w-fit bg-teal border border-sage-dark font-bold"
           >
             End poll
           </Button>
         </div>
 
-        <div className="py-2">
+        <div className="py-3">
           <div className="mb-1 font-bold">Polling results:</div>
           <ul>
             {candidateVoteCount.map((count, idx) =>
@@ -127,7 +127,7 @@ export default function Poll({
           </ul>
         </div>
 
-        <form id="pollForm" className="pt-2">
+        <form id="pollForm" className="pt-3">
           <fieldset>
             <legend className="mb-1 font-bold">Please select a candidate:</legend>
             {candidates.map((candidate, idx) =>
@@ -140,7 +140,7 @@ export default function Poll({
           </fieldset>
           <Button
             onClick={submitVote}
-            className="mt-2 w-fit bg-zest border border-sage-dark font-bold"
+            className="mt-3 w-fit bg-zest border border-sage-dark font-bold"
           >
             Submit vote
           </Button>
