@@ -10,6 +10,8 @@ export default function Voting(): JSX.Element {
   const [pollEndTime, setPollEndTime] = useState<BigInt | null>(null);
   const [checkIfSenderAlreadyVoted, setCheckIfSenderAlreadyVoted] = useState(false);
 
+  const [isPollActive, setIsPollActive] = useState(false)
+
   const fetchPollDetails = async () => {
     const provider = getProvider();
     const contract = getContract(provider);
@@ -23,16 +25,21 @@ export default function Voting(): JSX.Element {
     fetchPollDetails();
   }, []);
 
+  useEffect(() => {
+    setIsPollActive(!!(pollStartTime && !pollEndTime))
+  }, [pollStartTime, pollEndTime])
 
   return (
     <main className="grow max-w-2xl lg:max-w-6xl flex flex-col space-y-6 mx-auto w-full mt-6 px-6 lg:px-12">
       <Details
+        isPollActive={isPollActive}
         pollStartTime={pollStartTime}
         pollEndTime={pollEndTime}
         checkIfSenderAlreadyVoted={checkIfSenderAlreadyVoted}
         setCheckIfSenderAlreadyVoted={setCheckIfSenderAlreadyVoted}
       />
       <Poll
+        isPollActive={isPollActive}
         setPollStartTime={setPollStartTime}
         setPollEndTime={setPollEndTime}
         setCheckIfSenderAlreadyVoted={setCheckIfSenderAlreadyVoted}

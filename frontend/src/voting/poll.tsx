@@ -3,10 +3,12 @@ import { getProvider, getSigner, getContract} from '../utils/blockchainInteracti
 import Button from '../components/button';
 
 export default function Poll({
+  isPollActive,
   setPollStartTime,
   setPollEndTime,
   setCheckIfSenderAlreadyVoted
 }: {
+  isPollActive: boolean,
   setPollStartTime: Function,
   setPollEndTime: Function,
   setCheckIfSenderAlreadyVoted: Function
@@ -61,6 +63,7 @@ export default function Poll({
       candidatesList.push(candidate);
     }
     setCandidates(candidatesList);
+    await getWinners();
   };
 
   async function submitVote(e: Event): Promise<void> {
@@ -104,18 +107,10 @@ export default function Poll({
       <div className="p-3 text-lg font-bold bg-sand border-b border-sage-dark">Poll</div>
       <div className="p-3 divide-y divide-sage-dark text-sm">
         <div className="pb-3">
-          <Button
-            onClick={beginPoll}
-            className="w-fit bg-teal border border-sage-dark font-bold"
-          >
-            Initiate new poll
-          </Button>
-          <Button
-            onClick={endPoll}
-            className="ml-3 w-fit bg-teal border border-sage-dark font-bold"
-          >
-            End poll
-          </Button>
+          {isPollActive
+            ? <Button onClick={endPoll} className="w-fit bg-teal border border-sage-dark font-bold">End poll</Button>
+            : <Button onClick={beginPoll} className="w-fit bg-teal border border-sage-dark font-bold">Initiate new poll</Button>
+          }
         </div>
 
         <div className="py-3">
@@ -127,25 +122,27 @@ export default function Poll({
           </ul>
         </div>
 
-        <form id="pollForm" className={`${winners.length ? 'py-3' : 'pt-3'}`}>
-          <fieldset>
-            <legend className="mb-1 font-bold">Please select a candidate:</legend>
-            {candidates.map((candidate, idx) =>
-              <div key={idx}>
-                <input type="radio" id={candidate} name="poll" value={idx} />
-                <label htmlFor={candidate} className="ml-1">{candidate}</label>
-              </div>
-            )}
-          </fieldset>
-          <Button
-            onClick={submitVote}
-            className="mt-3 w-fit bg-zest border border-sage-dark font-bold"
-          >
-            Submit vote
-          </Button>
-        </form>
+        {isPollActive &&
+          <form id="pollForm" className={`${winners.length ? 'py-3' : 'pt-3'}`}>
+            <fieldset>
+              <legend className="mb-1 font-bold">Please select a candidate:</legend>
+              {candidates.map((candidate, idx) =>
+                <div key={idx}>
+                  <input type="radio" id={candidate} name="poll" value={idx} />
+                  <label htmlFor={candidate} className="ml-1">{candidate}</label>
+                </div>
+              )}
+            </fieldset>
+            <Button
+              onClick={submitVote}
+              className="mt-3 w-fit bg-zest border border-sage-dark font-bold"
+            >
+              Submit vote
+            </Button>
+          </form>
+        }
 
-        {winners.length ? <div className="pt-3 text-xl font-bold">Winner: {winners.join(', ')}</div> : null}
+        {!isPollActive && <div className="pt-3 text-xl font-bold">Winner: {winners.join(', ')}</div>}
       </div>
     </div>
   )

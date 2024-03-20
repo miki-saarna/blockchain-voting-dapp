@@ -3,11 +3,13 @@ import { getProvider, getSigner, getContract} from '../utils/blockchainInteracti
 import dayjs from 'dayjs';
 
 export default function Details({
+  isPollActive,
   pollStartTime,
   pollEndTime,
   checkIfSenderAlreadyVoted,
   setCheckIfSenderAlreadyVoted
 }: {
+  isPollActive: boolean,
   pollStartTime: BigInt | null,
   pollEndTime: BigInt | null,
   checkIfSenderAlreadyVoted: boolean,
@@ -56,7 +58,7 @@ export default function Details({
       <div className="p-3 text-lg font-bold bg-sand border-b border-sage-dark">Details</div>
       <div className="p-3 divide-y divide-sage-dark text-sm">
         <div className="pb-3">
-          <div><span className="font-bold">Status:</span> {pollStartTime && !pollEndTime ? <span className="text-green-500">active</span> : <span className="text-red-500">inactive</span>}</div>
+          <div><span className="font-bold">Status:</span> {isPollActive ? <span className="text-green-500">active</span> : <span className="text-red-500">inactive</span>}</div>
           <div><span className="font-bold">Start time:</span> {convertBigIntToDate(pollStartTime)}</div>
           <div><span className="font-bold">End time:</span> {convertBigIntToDate(pollEndTime)}</div>
         </div>
