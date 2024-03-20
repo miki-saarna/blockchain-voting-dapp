@@ -9,7 +9,6 @@ function App(): JSX.Element {
 
   useEffect(() => {
     document.documentElement.style.background = '#fff8f0';
-    document.documentElement.style.color = '#292524';
   }, [])
 
   return (
