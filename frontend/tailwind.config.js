@@ -7,7 +7,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        
+        sand: "#f5f2eb",
+        darkSage: "#4c797c",
+        sage: "#BCB88A"
       },
     },
   },
