@@ -1,7 +1,7 @@
 import { JSX, useEffect } from 'react';
-import Header from './header/index';
-import Footer from './footer/index';
-import Intro from './intro/index';
+import Header from './layout/header';
+import Footer from './layout/footer';
+import Intro from './layout/description';
 import Voting from './voting/index'
 import MetaMaskInteractions from './utils/metaMaskInteractions';
 
