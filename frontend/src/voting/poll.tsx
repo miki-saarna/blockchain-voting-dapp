@@ -113,12 +113,12 @@ export default function Poll({
 
   return (
     <div className="bg-white border border-sage-dark rounded-md overflow-hidden">
-      <div className="p-3 text-lg font-bold bg-sand border-b border-sage-dark">Poll</div>
+      <div className="p-3 text-lg font-bold bg-teal border-b border-sage-dark">Poll</div>
       <div className="p-3 divide-y divide-sage-dark text-sm">
         <div className="pb-3">
           {isPollActive
-            ? <Button disabled={isLoading} onClick={endPoll} className="w-fit bg-teal border border-sage-dark font-bold disabled:bg-teal/50 disabled:border-sage-dark/50 disabled:text-sage-dark/50 disabled:cursor-not-allowed">End poll</Button>
-            : <Button disabled={isLoading} onClick={beginPoll} className="w-fit bg-teal border border-sage-dark font-bold disabled:bg-teal/50 disabled:border-sage-dark/50 disabled:text-sage-dark/50 disabled:cursor-not-allowed">Initiate new poll</Button>
+            ? <Button disabled={isLoading} onClick={endPoll} className="w-fit bg-zest border border-sage-dark font-bold disabled:bg-zest/50 disabled:border-sage-dark/50 disabled:text-sage-dark/50 disabled:cursor-not-allowed">End poll</Button>
+            : <Button disabled={isLoading} onClick={beginPoll} className="w-fit bg-zest border border-sage-dark font-bold disabled:bg-zest/50 disabled:border-sage-dark/50 disabled:text-sage-dark/50 disabled:cursor-not-allowed">Initiate new poll</Button>
           }
         </div>
 
