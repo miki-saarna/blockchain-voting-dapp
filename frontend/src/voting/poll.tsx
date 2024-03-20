@@ -100,46 +100,45 @@ export default function Poll({
   }, [candidates]);
 
   return (
-    <div className="p-3 bg-white border border-sage-dark rounded-md">
-      <Button
-        onClick={beginPoll}
-        className="w-fit bg-teal border border-sage-dark font-bold"
-      >
-        Begin poll
-      </Button>
-      <Button
-        onClick={endPoll}
-        className="w-fit bg-teal border border-sage-dark font-bold"
-      >
-        End poll
-      </Button>
+    <div className="p-3 divide-y divide-sage-dark bg-white border border-sage-dark rounded-md">
+      <div className="pb-2">
+        <Button
+          onClick={beginPoll}
+          className="w-fit bg-teal border border-sage-dark font-bold"
+        >
+          Begin poll
+        </Button>
+        <Button
+          onClick={endPoll}
+          className="ml-2 w-fit bg-teal border border-sage-dark font-bold"
+        >
+          End poll
+        </Button>
+      </div>
 
-      <ul className="border">
-        {candidateVoteCount.map((count, idx) =>
-        <li>{candidates[idx]}: {count ? count : 0}</li>
-        )}
-      </ul>
+      <div className="py-2 text-sm">
+        <div className="mb-1">Polling results:</div>
+        <ul>
+          {candidateVoteCount.map((count, idx) =>
+          <li>{candidates[idx]}: {count ? count : 0}</li>
+          )}
+        </ul>
+      </div>
 
-      <form id="pollForm">
-        <fieldset>
-          <legend>Please select your preferred contact method:</legend>
-          <div>
-            {candidates.map((candidate, idx) =>
-              <>
-                <input type="radio" id={candidate} name="poll" value={idx} />
-                <label>{candidate}</label>
-                {/* <label for="contactChoice1">Email</label> */}
-              </>
-            )}
-          </div>
-          <div>
-            <button type="submit">Submit</button>
-          </div>
+      <form id="pollForm" className="pt-2">
+        <fieldset className="text-sm">
+          <legend className="mb-1">Please select a candidate:</legend>
+          {candidates.map((candidate, idx) =>
+            <div>
+              <input type="radio" id={candidate} name="poll" value={idx} />
+              <label className="ml-1">{candidate}</label>
+              {/* <label for="contactChoice1">Email</label> */}
+            </div>
+          )}
         </fieldset>
-
         <Button
           onClick={submitVote}
-          className="w-fit bg-zest border border-sage-dark font-bold"
+          className="mt-2 w-fit bg-zest border border-sage-dark font-bold"
         >
           Submit vote
         </Button>
