@@ -133,8 +133,7 @@ export default function Poll({
             {candidates.map((candidate, idx) =>
               <div>
                 <input type="radio" id={candidate} name="poll" value={idx} />
-                <label className="ml-1">{candidate}</label>
-                {/* <label for="contactChoice1">Email</label> */}
+                <label htmlFor={candidate} className="ml-1">{candidate}</label>
               </div>
             )}
           </fieldset>
