@@ -5,8 +5,10 @@ import Button from '../components/button';
 export default function Poll(): JSX.Element {
   const [pollStartTime, setPollStartTime] = useState<number>(0);
   const [pollEndTime, setPollEndTime] = useState<number>(0);
+
   const [candidates, setCandidates] = useState<any[]>([]);
   const [candidateVoteCount, setCandidateVoteCount] = useState<any[]>([]);
+  const [winners, setWinners] = useState<string[]>([]);
 
   async function beginPoll() {
     const signer = getSigner()
@@ -27,7 +29,16 @@ export default function Poll(): JSX.Element {
     const signer = await getSigner();
     const contract = getContract(signer);
     await contract.endPoll();
+
+    await getWinners();
   };
+
+  const getWinners = async () => {
+    const provider = getProvider();
+    const contract = getContract(provider);
+    const winners: string[] = await contract.getWinners();
+    setWinners(winners)
+  }
 
   const fetchCandidates = async () => {
     const provider = getProvider();
@@ -80,10 +91,6 @@ export default function Poll(): JSX.Element {
 
   return (
     <div className="p-3 border border-red-300 rounded-md">
-      {/*
-      candidateIdxToVoteCount
-      getWinners
-      */}
       <Button
         onClick={beginPoll}
         className="w-fit bg-gray-800 font-bold"
@@ -104,7 +111,7 @@ export default function Poll(): JSX.Element {
         Test handler
       </Button>
       <ul className="border">
-        {candidateVoteCount.map((count, idx) => 
+        {candidateVoteCount.map((count, idx) =>
         <li>{candidates[idx]}: {count ? count : 0}</li>
         )}
       </ul>
@@ -113,7 +120,7 @@ export default function Poll(): JSX.Element {
         <fieldset>
           <legend>Please select your preferred contact method:</legend>
           <div>
-            {candidates.map((candidate, idx) => 
+            {candidates.map((candidate, idx) =>
               <>
                 <input type="radio" id={candidate} name="poll" value={idx} />
                 <label>{candidate}</label>
@@ -133,6 +140,8 @@ export default function Poll(): JSX.Element {
           Submit vote
         </Button>
       </form>
+
+      {winners.length && <div>Winner: {winners}</div>}
     </div>
   )
 }
