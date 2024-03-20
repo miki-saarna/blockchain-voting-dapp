@@ -85,10 +85,6 @@ export default function Poll(): JSX.Element {
     getCandidateVoteCount();
   }, [candidates]);
 
-  function testHandler() {
-    console.log(candidates)
-  }
-
   return (
     <div className="p-3 border border-red-300 rounded-md">
       <Button
@@ -104,12 +100,6 @@ export default function Poll(): JSX.Element {
         End poll
       </Button>
 
-      <Button
-        onClick={testHandler}
-        className="w-fit bg-gray-800 font-bold"
-      >
-        Test handler
-      </Button>
       <ul className="border">
         {candidateVoteCount.map((count, idx) =>
         <li>{candidates[idx]}: {count ? count : 0}</li>
