@@ -27,14 +27,13 @@ export default function MetaMaskInteractions() {
     <div className="max-w-2xl lg:max-w-6xl flex flex-col mx-auto w-full mt-6 px-6 lg:px-12">
       <div className="bg-white border border-sage-dark rounded-md overflow-hidden">
         <div className="p-3 text-lg font-bold bg-sand border-b border-sage-dark">MetaMask</div>
-        <div className="p-3 divide-y divide-sage-dark text-sm">
-          <Button
-            onClick={connectWallet}
-            className="w-fit bg-teal border border-sage-dark font-bold"
-          >
-            Connect to MetaMask
-          </Button>
-          <p className="mt-3 pt-3 text-xs"><span className="font-bold">MetaMask account:</span> {userAccount}</p>
+        <div className="p-3">
+          {userAccount
+            ? <p className="text-xs"><span className="font-bold">MetaMask account:</span> {userAccount}</p>
+            : <Button onClick={connectWallet} className="w-fit bg-teal border border-sage-dark font-bold">
+              Connect to MetaMask
+            </Button>
+          }
         </div>
       </div>
     </div>
