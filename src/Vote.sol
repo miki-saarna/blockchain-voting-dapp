@@ -22,6 +22,8 @@ contract Vote {
   Vault public immutable voteVault;
   
   string[] public candidates;
+  address[] private votedListArray;
+  address[] private claimedRewardBonusArray;
 
   uint256 public pollStartTime;
   uint256 public pollEndTime;
@@ -31,7 +33,7 @@ contract Vote {
   uint256 public totalVoteCount = 0;
   uint256 public totalRegisteredVoters = 10;
 
-  mapping(address owner => bool voted) private ownerVoted;
+  mapping(address owner => bool voted) private votedList;
   mapping(address owner => bool claimed) private claimedRewardBonus;
   mapping (uint256 candidateIdx => uint256 voteCount) public candidateIdxToVoteCount;
 
@@ -62,9 +64,14 @@ contract Vote {
     voteRewardBonusAmount = 0;
     totalVoteCount = 0;
 
-    // RESET:
-    // ownerVoted
-    // claimedRewardBonus
+    for (uint256 i = 0; i < votedListArray.length; i++) {
+      delete votedList[votedListArray[i]];
+    }
+
+    for (uint256 i = 0; i < claimedRewardBonusArray.length; i++) {
+      delete claimedRewardBonus[claimedRewardBonusArray[i]];
+    }
+
   }
 
   function endPoll() public pollIsActive {
@@ -74,6 +81,7 @@ contract Vote {
     pollEndTime = block.timestamp;
     emit PollEnded(pollEndTime);
 
+    
     voteRewardBonusAmount = getTokenRewardBonusAmount();
   }
 
@@ -86,10 +94,11 @@ contract Vote {
       revert Vote__PollClosed(pollEndTime);
     } else if (totalVoteCount == totalRegisteredVoters) {
       revert Vote__AllRegisteredVotersAlreadyVoted(msg.sender);
-    } else if (ownerVoted[msg.sender]) {
+    } else if (votedList[msg.sender]) {
       revert Vote__UserAlreadyVoted(msg.sender);
     } else {
-      ownerVoted[msg.sender] = true;
+      votedList[msg.sender] = true;
+      votedListArray.push(msg.sender);
       candidateIdxToVoteCount[candidateIdx]++;
       totalVoteCount++;
 
@@ -145,12 +154,13 @@ contract Vote {
   function claimRewardBonus() public {
     if (pollEndTime == 0) {
       revert Vote__PollNotClosed();
-    } else if (!ownerVoted[msg.sender]) {
+    } else if (!votedList[msg.sender]) {
       revert Vote__UserHasNotVoted();
     } else if (claimedRewardBonus[msg.sender]) {
       revert Vote__UserAlreadyClaimedRewardBonus();
     } else {
       claimedRewardBonus[msg.sender] = true;
+      claimedRewardBonusArray.push(msg.sender);
       voteVault.approve(address(this), voteRewardBonusAmount);
       voteToken.transferFrom(address(voteVault), msg.sender, voteRewardBonusAmount);
       emit VoterClaimedRewardBonus(msg.sender, voteRewardBonusAmount);
@@ -158,7 +168,7 @@ contract Vote {
   }
 
   function checkIfSenderAlreadyVoted() external view returns (bool) {
-    return ownerVoted[msg.sender];
+    return votedList[msg.sender];
   }
 
   function getNumberOfCandidates() public view returns (uint256) {
