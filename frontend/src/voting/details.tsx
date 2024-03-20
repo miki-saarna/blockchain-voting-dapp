@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getProvider, getSigner, getContract} from '../utils/blockchainInteractions';
+import dayjs from 'dayjs';
 
 export default function Details({
   pollStartTime,
@@ -38,11 +39,12 @@ export default function Details({
     setCheckIfSenderAlreadyVoted(checkIfSenderAlreadyVoted)
   }
 
-  function convertBigIntToDate(bigInt: BigInt): Date | null {
-    const timestamp = Number(bigInt);
-    if (!timestamp) return null
-    const date = new Date(timestamp * 1000);
-    return date
+  function convertBigIntToDate(dateAsbigInt: BigInt | null): string {
+    if (!dateAsbigInt) return 'not set';
+    const timestamp = Number(dateAsbigInt);
+    const formattedDate = dayjs(timestamp * 1000).format('MMM DD, YYYY [at] HH:mm:ss')
+
+    return formattedDate
   }
 
   useEffect(() => {
@@ -55,8 +57,8 @@ export default function Details({
       <div className="p-3 divide-y divide-sage-dark text-sm">
         <div className="pb-3">
           <div><span className="font-bold">Status:</span> {pollStartTime && !pollEndTime ? <span className="text-green-500">active</span> : <span className="text-red-500">inactive</span>}</div>
-          <div><span className="font-bold">Start time:</span> {pollStartTime ? convertBigIntToDate(pollStartTime)?.toString() : 'Not set'}</div>
-          <div><span className="font-bold">End time:</span> {pollEndTime ? convertBigIntToDate(pollEndTime)?.toString() : 'Not set'}</div>
+          <div><span className="font-bold">Start time:</span> {convertBigIntToDate(pollStartTime)}</div>
+          <div><span className="font-bold">End time:</span> {convertBigIntToDate(pollEndTime)}</div>
         </div>
         <div className="py-3">
           <div><span className="font-bold">Vote reward amount:</span> {voteRewardAmount / divider}</div>
