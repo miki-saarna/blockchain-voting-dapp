@@ -6,6 +6,7 @@ export default function Poll(): JSX.Element {
   const [pollStartTime, setPollStartTime] = useState<number>(0);
   const [pollEndTime, setPollEndTime] = useState<number>(0);
   const [candidates, setCandidates] = useState<any[]>([]);
+  const [candidateVoteCount, setCandidateVoteCount] = useState<any[]>([]);
 
   async function beginPoll() {
     const signer = getSigner()
@@ -31,42 +32,55 @@ export default function Poll(): JSX.Element {
   const fetchCandidates = async () => {
     const provider = getProvider();
     const contract = getContract(provider);
-    const candidatesLength = await contract.candidates.length; // Must create this func in smart contract
-    console.log(candidatesLength)
+    const candidatesLength: bigint = await contract.getNumberOfCandidates();
     let candidatesList = [];
     for (let i = 0; i < candidatesLength; i++) {
       const candidate = await contract.candidates(i);
       candidatesList.push(candidate);
     }
     setCandidates(candidatesList);
-    console.log(candidates)
   };
 
-  // async function getCandidatesList() {
-  //   const provider = getProvider()
-  //   const contract = getContract(provider)
-  //   const candidates = await contract.candidates()
-  //   console.log("candidates", candidates)
-  //   return candidates;
-  // }
+  async function submitVote(e: Event): Promise<void> {
+    e.preventDefault();
+    const formEl: any = document.getElementById('pollForm');
+    const selectedIdx: number = Number(formEl.elements["poll"].value);
 
-  async function castVote(candidateIdx: number) {
     const signer = getSigner()
     const contract = getContract(signer)
-    const tx = await contract.castVote(candidateIdx)
+    const tx = await contract.castVote(selectedIdx)
     console.log("tx", tx)
     await tx.wait()
     console.log('tx mined')
+  }
+
+  const getCandidateVoteCount = async(): Promise<any> => {
+    const provider = getProvider()
+    const contract = getContract(provider)
+
+    const voteCount = candidates.map(async (_, idx) => {
+      const voteCount: number = await contract.candidateIdxToVoteCount(idx)
+      return voteCount;
+    })
+    const candidateVoteCount = await Promise.all(voteCount);
+    setCandidateVoteCount(candidateVoteCount)
   }
 
   useEffect(() => {
     fetchCandidates();
   }, []);
 
+  useEffect(() => {
+    getCandidateVoteCount();
+  }, [candidates]);
+
+  function testHandler() {
+    console.log(candidates)
+  }
+
   return (
     <div className="p-3 border border-red-300 rounded-md">
       {/*
-      candidates
       candidateIdxToVoteCount
       getWinners
       */}
@@ -77,14 +91,48 @@ export default function Poll(): JSX.Element {
         Begin poll
       </Button>
       <Button
-        onClick={() => castVote(1)}
+        onClick={endPoll}
         className="w-fit bg-gray-800 font-bold"
       >
-        Vote for 2nd candidate
+        End poll
       </Button>
-      <ul>
-        {candidates.map((candidate) => <li>{candidate}</li>)}
+
+      <Button
+        onClick={testHandler}
+        className="w-fit bg-gray-800 font-bold"
+      >
+        Test handler
+      </Button>
+      <ul className="border">
+        {candidateVoteCount.map((count, idx) => 
+        <li>{candidates[idx]}: {count ? count : 0}</li>
+        )}
       </ul>
+
+      <form id="pollForm">
+        <fieldset>
+          <legend>Please select your preferred contact method:</legend>
+          <div>
+            {candidates.map((candidate, idx) => 
+              <>
+                <input type="radio" id={candidate} name="poll" value={idx} />
+                <label>{candidate}</label>
+                {/* <label for="contactChoice1">Email</label> */}
+              </>
+            )}
+          </div>
+          <div>
+            <button type="submit">Submit</button>
+          </div>
+        </fieldset>
+
+        <Button
+          onClick={submitVote}
+          className="w-fit bg-gray-800 font-bold"
+        >
+          Submit vote
+        </Button>
+      </form>
     </div>
   )
 }
