@@ -102,7 +102,7 @@ export default function Poll({
   return (
     <div className="bg-white border border-sage-dark rounded-md overflow-hidden">
       <div className="p-3 text-lg font-bold bg-sand border-b border-sage-dark">Poll details</div>
-      <div className="p-3 divide-y divide-sage-dark">
+      <div className="p-3 divide-y divide-sage-dark text-sm">
         <div className="pb-2">
           <Button
             onClick={beginPoll}
@@ -118,8 +118,8 @@ export default function Poll({
           </Button>
         </div>
 
-        <div className="py-2 text-sm">
-          <div className="mb-1">Polling results:</div>
+        <div className="py-2">
+          <div className="mb-1 font-bold">Polling results:</div>
           <ul>
             {candidateVoteCount.map((count, idx) =>
             <li>{candidates[idx]}: {count ? count : 0}</li>
@@ -128,8 +128,8 @@ export default function Poll({
         </div>
 
         <form id="pollForm" className="pt-2">
-          <fieldset className="text-sm">
-            <legend className="mb-1">Please select a candidate:</legend>
+          <fieldset>
+            <legend className="mb-1 font-bold">Please select a candidate:</legend>
             {candidates.map((candidate, idx) =>
               <div>
                 <input type="radio" id={candidate} name="poll" value={idx} />
