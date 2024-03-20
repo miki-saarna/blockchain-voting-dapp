@@ -1,6 +1,9 @@
 import { JSX, useState, useEffect } from 'react';
 import { getProvider, getSigner, getContract} from '../utils/blockchainInteractions';
 import Button from '../components/button';
+import LoadingSpinner from '../components/loadingSpinner'
+import LoadingOverlay from '../components/loadingOverlay'
+
 
 export default function Poll({
   isPollActive,
@@ -112,7 +115,9 @@ export default function Poll({
   }, [candidates]);
 
   return (
-    <div className="border border-sage-dark rounded-md overflow-hidden">
+    <div className="relative border border-sage-dark rounded-md overflow-hidden">
+      {isLoading && <LoadingOverlay />}
+
       <div className="p-3 text-lg font-bold bg-teal border-b border-sage-dark">Poll</div>
       <div className="p-3 divide-y divide-sage-dark text-sm">
         <div className="pb-3">
