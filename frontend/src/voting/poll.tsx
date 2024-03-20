@@ -103,13 +103,13 @@ export default function Poll({
     <div className="p-3 bg-white border border-darkSage rounded-md">
       <Button
         onClick={beginPoll}
-        className="w-fit bg-gray-800 font-bold"
+        className="w-fit bg-teal border border-darkSage font-bold"
       >
         Begin poll
       </Button>
       <Button
         onClick={endPoll}
-        className="w-fit bg-gray-800 font-bold"
+        className="w-fit bg-teal border border-darkSage font-bold"
       >
         End poll
       </Button>
@@ -139,7 +139,7 @@ export default function Poll({
 
         <Button
           onClick={submitVote}
-          className="w-fit bg-gray-800 font-bold"
+          className="w-fit bg-zest border border-darkSage font-bold"
         >
           Submit vote
         </Button>

@@ -9,7 +9,9 @@ module.exports = {
       colors: {
         sand: "#f5f2eb",
         darkSage: "#4c797c",
-        sage: "#BCB88A"
+        sage: "#BCB88A",
+        zest: "#ffc000",
+        teal: "#00c2b8"
       },
     },
   },
