@@ -54,7 +54,7 @@ export default function Details({
   }, [])
 
   return (
-    <div className="bg-white border border-sage-dark rounded-md overflow-hidden">
+    <div className="border border-sage-dark rounded-md overflow-hidden">
       <div className="p-3 text-lg font-bold bg-teal border-b border-sage-dark">Details</div>
       <div className="p-3 divide-y divide-sage-dark text-sm">
         <div className="pb-3">
