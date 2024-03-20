@@ -108,7 +108,7 @@ export default function Poll({
             onClick={beginPoll}
             className="w-fit bg-teal border border-sage-dark font-bold"
           >
-            Begin poll
+            Initiate new poll
           </Button>
           <Button
             onClick={endPoll}
