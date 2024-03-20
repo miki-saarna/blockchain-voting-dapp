@@ -1,4 +1,5 @@
 import { JSX } from 'react';
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid'
 
 export default function Header(): JSX.Element {
   return (
@@ -7,9 +8,10 @@ export default function Header(): JSX.Element {
         href="https://github.com/miki-saarna/blockchain-voting-dapp"
         target="_blank"
         rel="noopener noreferrer"
-        className="text-sm text-blue-500 underline"
+        className="flex items-center text-sm text-blue-500 underline"
       >
-        View source code
+        <span>View source code</span>
+        <ArrowTopRightOnSquareIcon className="ml-1 w-4 h-4" />
       </a>
     </footer>
   )
