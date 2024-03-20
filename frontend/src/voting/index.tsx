@@ -2,7 +2,7 @@ import { JSX, useState, useEffect } from 'react';
 import Details from './details';
 import Poll from './poll';
 import Rewards from './rewards';
-import { getProvider, getSigner, getContract} from '../utils/blockchainInteractions';
+import { getProvider, getContract} from '../utils/blockchainInteractions';
 
 export default function Voting(): JSX.Element {
 
@@ -18,13 +18,6 @@ export default function Voting(): JSX.Element {
     setPollStartTime(startTime);
     setPollEndTime(endTime);
   };
-
-  // function convertBigIntToDate(bigInt: BigInt): Date | null {
-  //   const timestamp = Number(bigInt);
-  //   if (!timestamp) return null
-  //   const date = new Date(timestamp * 1000);
-  //   return date
-  // }
 
   useEffect(() => {
     fetchPollDetails();
