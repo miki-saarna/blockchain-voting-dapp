@@ -127,7 +127,7 @@ export default function Poll({
           </ul>
         </div>
 
-        <form id="pollForm" className="pt-3">
+        <form id="pollForm" className={`${winners.length ? 'py-3' : 'pt-3'}`}>
           <fieldset>
             <legend className="mb-1 font-bold">Please select a candidate:</legend>
             {candidates.map((candidate, idx) =>
@@ -146,7 +146,7 @@ export default function Poll({
           </Button>
         </form>
 
-        {winners.length ? <div>Winner: {winners.join(', ')}</div> : null}
+        {winners.length ? <div className="pt-3 text-xl font-bold">Winner: {winners.join(', ')}</div> : null}
       </div>
     </div>
   )
