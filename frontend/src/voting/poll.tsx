@@ -204,7 +204,7 @@ export default function Poll({
             <Button
               disabled={isLoading}
               onClick={submitVote}
-              className="mt-3 w-fit bg-zest border border-sage-dark font-bold disabled:bg-teal/50 disabled:border-sage-dark/50 disabled:text-sage-dark/50 disabled:cursor-not-allowed"
+              className="mt-3 w-fit bg-zest border border-sage-dark font-bold disabled:bg-zest/50 disabled:border-sage-dark/50 disabled:text-sage-dark/50 disabled:cursor-not-allowed"
             >
               Submit vote
             </Button>
