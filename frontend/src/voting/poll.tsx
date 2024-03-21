@@ -1,9 +1,9 @@
-import { JSX, useState, useEffect } from 'react';
+import { JSX, useState, useEffect, useRef, KeyboardEvent } from 'react';
 import { getProvider, getSigner, getContract} from '../utils/blockchainInteractions';
 import Button from '../components/button';
-import LoadingSpinner from '../components/loadingSpinner'
 import LoadingOverlay from '../components/loadingOverlay'
-
+import TextInput from '../components/textInput'
+import { UserIcon, TrashIcon } from '@heroicons/react/24/solid'
 
 export default function Poll({
   isPollActive,
@@ -19,22 +19,47 @@ export default function Poll({
   setCheckIfSenderAlreadyVoted: Function
 }): JSX.Element {
 
+  const [newPollCandidates, setNewPollCandidates] = useState<any[]>([]);
   const [candidates, setCandidates] = useState<any[]>([]);
   const [candidateVoteCount, setCandidateVoteCount] = useState<any[]>([]);
   const [winners, setWinners] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>()
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  function addNewCandidate(): void {
+    const inputEl: any = inputRef.current
+    if (inputEl && inputEl.value) {
+      const inputValueFoundIdx = newPollCandidates.indexOf(inputEl.value);
+      if (inputValueFoundIdx !== -1) return
+      setNewPollCandidates([...newPollCandidates, inputEl.value])
+      inputEl.value = ''
+      inputEl.focus()
+    }
+  }
+
+  function keyUpHandler(e: KeyboardEvent<HTMLInputElement>): void {
+    if (e.key === 'Enter') {
+      addNewCandidate()
+    }
+  }
+
+  function removeNewCandidate(idx: number): void {
+    setNewPollCandidates(newPollCandidates.filter((_, index) => index !== idx));
+  }
 
   async function beginPoll() {
     setIsLoading(true)
     const signer = getSigner()
     const contract = getContract(signer)
 
-    const exampleCandidates = ["jack", 'henz', 'lemon']
-
-    const tx = await contract.beginPoll(exampleCandidates)
+    const tx = await contract.beginPoll(newPollCandidates)
     console.log("tx", tx)
     await tx.wait()
     console.log('tx mined')
+    // set candidates!
+    setCandidates(newPollCandidates)
+    setNewPollCandidates([])
     const startTime = await contract.pollStartTime();
     setPollStartTime(startTime.toString());
     setPollEndTime(null);
@@ -121,10 +146,38 @@ export default function Poll({
       <div className="p-3 text-lg font-bold bg-teal border-b border-sage-dark">Poll</div>
       <div className="p-3 divide-y divide-sage-dark text-sm">
         <div className="pb-3">
+          {!isPollActive &&
+            <div>
+              <div>Add at least 2 candidates to begin the poll!</div>
+              <div className="mt-2 flex items-center">
+                <TextInput onKeyUp={keyUpHandler} ref={inputRef} />
+                <Button onClick={addNewCandidate} className="ml-2 items-center bg-zest border border-sage-dark font-bold flex">
+                  <span>Add</span>
+                  <UserIcon className="ml-0.5 w-3.5 h-3.5" />
+                  </Button>
+              </div>
+              {!!newPollCandidates.length &&
+                <>
+                  <div className="mt-2">New candidates:</div>
+                  <ol className="mt-1">
+                    {newPollCandidates.map((candidate, idx) =>
+                      <li key={idx} className="flex items-center">
+                        <span className="font-bold">{candidate}</span>
+                        <button onClick={() => removeNewCandidate(idx)} className="ml-1 p-0.5"><TrashIcon className="w-3.5 h-3.5 text-red-500" /></button>
+                      </li>
+                    )}
+                  </ol>
+                </>
+              }
+            </div>
+          }
+
           {isPollActive
             ? <Button disabled={isLoading} onClick={endPoll} className="w-fit bg-zest border border-sage-dark font-bold disabled:bg-zest/50 disabled:border-sage-dark/50 disabled:text-sage-dark/50 disabled:cursor-not-allowed">End poll</Button>
-            : <Button disabled={isLoading} onClick={beginPoll} className="w-fit bg-zest border border-sage-dark font-bold disabled:bg-zest/50 disabled:border-sage-dark/50 disabled:text-sage-dark/50 disabled:cursor-not-allowed">Initiate new poll</Button>
+            : <Button disabled={isLoading || newPollCandidates.length < 2} onClick={beginPoll} className="mt-2 w-fit bg-zest border border-sage-dark font-bold disabled:bg-zest/50 disabled:border-sage-dark/50 disabled:text-sage-dark/50 disabled:cursor-not-allowed">Initiate new poll</Button>
           }
+
+
         </div>
 
         <div className="py-3">
