@@ -39,7 +39,7 @@ export default function MetaMaskInteractions() {
               <Button onClick={connectWallet} className="w-fit bg-zest border border-sage-dark font-bold">
                 Connect to MetaMask
               </Button>
-              <div className="mt-2">Connecting to MetaMask is required to use this app.</div>
+              <div className="mt-2 text-sm">Connecting to MetaMask is required to use this app.</div>
             </>
           }
         </div>
