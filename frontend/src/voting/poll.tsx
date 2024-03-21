@@ -66,6 +66,7 @@ export default function Poll({
     await getCandidateVoteCount()
     setWinners([])
     setIsLoading(false)
+    setCheckIfSenderAlreadyVoted(false)
   }
 
   const endPoll = async () => {
