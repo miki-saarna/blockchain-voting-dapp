@@ -19,8 +19,12 @@ export default function MetaMaskInteractions() {
 
   useEffect(() => {
     connectWallet();
-    // Optional: Listen for account changes
-    window.ethereum.on('accountsChanged', () => connectWallet());
+    try {
+      // Optional: Listen for account changes
+      window.ethereum.on('accountsChanged', () => connectWallet());
+    } catch (err) {
+      console.log("Error: ", err);
+    }
   }, []);
 
   return (
