@@ -37,6 +37,7 @@ export default function Voting(): JSX.Element {
         checkIfSenderAlreadyVoted={checkIfSenderAlreadyVoted}
         setCheckIfSenderAlreadyVoted={setCheckIfSenderAlreadyVoted}
       />
+      <p className="text-xs"><span className="font-bold">Note:</span> if you encounter any errors, please terminate the poll by clicking on the "End poll" button if it isn't already terminated and refresh the page.</p>
       <Poll
         isPollActive={isPollActive}
         setPollStartTime={setPollStartTime}
