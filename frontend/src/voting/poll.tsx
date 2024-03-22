@@ -141,7 +141,7 @@ export default function Poll({
   }, [candidates]);
 
   return (
-    <div className="relative border border-sage-dark rounded-md overflow-hidden">
+    <div className="relative bg-white border border-sage-dark rounded-md overflow-hidden">
       {isLoading && <LoadingOverlay />}
 
       <div className="p-3 text-lg font-bold bg-teal border-b border-sage-dark">Poll</div>
