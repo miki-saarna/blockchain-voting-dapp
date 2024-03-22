@@ -1,56 +1,46 @@
-# Voting Smart Contract
+# Blockchain Voting Smart Contract dApp
 
-This smart contract is currently available to interact with by importing the following Gist ID into Remix: 44065bd0829da53415ed96732502d3b2
+Welcome to the Blockchain Voting Smart Contract dApp! This project is designed for educational and learning purposes, exploring the possibilities of decentralized voting systems using blockchain technology.
 
+You can interact with this smart contract [here](https://voting-dapp-ashy.vercel.app)!
 
-## Contract notes
-- Added functionality to incentivize voting - incentive reward amount exponentially increases as more people vote
+You can also import the following Gist ID into Remix: 44065bd0829da53415ed96732502d3b2
 
-## Documentation notes
-- Although Hardhat is a viable alternative, the following documentation assumes usage of Foundry's test suite
+## Overview
 
-## Commands
+Explore the future of voting with our Blockchain Voting dApp, a developmental project designed for learning and experimentation in Solidity and smart contract technology. Currently a work in progress with additional features on the way, this smart contract is deployed on Sepolia testnet and is perfect for testing and educational purposes and is not intended for official use.
 
-### Compile
-`forge build`
+## Features
 
-### Local node
-1. `anvil`
+- **Decentralized Voting:** Utilize the power of blockchain technology for secure and transparent voting processes.
+- **Testnet Deployment:** The smart contract is deployed on Sepolia testnet, providing a sandbox environment for experimentation.
+- **Educational Purpose:** This project aims to provide insights into Solidity and smart contract development, perfect for educational purposes.
+- **Continuous Improvement:** Stay tuned for updates and improvements as we continue to enhance the functionality and usability of the dApp.
 
-2. `npx hardhat node`
+## Technologies Used
 
-if using hardhat, run these prerequisite commands:
-- `npx install --save-dev hardhat`
-- `npx hardhat init`
+- **Solidity**
+- **TypeScript**
+- **React**
+- **Tailwind CSS**
+- **Sepolia Testnet**
 
-### Deploy contract
+## Usage
 
-`forge script script/<DeploymentContract>.s.sol:<DeploymentContractFunction> --rpc-url <rpc-url> --private-key <private-key> --broadcast`
-- suffixed `--broadcast` to broadcast transactions to the blockchain
+- Clone the repository.
+- Install dependencies with `npm install`.
+- Start the development server with `npm start`.
 
-### Cast
+Note: Page errors may occur while using this app. My next development priority is improving smart contract error handling. Please refresh the page if you encounter any errors until this issue is resolved. It is also strongly advised to terminate the current poll if it is in an active status by clicking on the "End poll" button. This should reset the app and prevent errors from occurring.
 
-- `cast call <contract-address> '<function-name>()' --rpc-url <rpc-url> --private-key <private-key>`
-- `cast send <contract-address> '<function-name>()' --rpc-url <rpc-url> --private-key <private-key>`
+## Disclaimer
 
-### Makefile
+This dApp is intended for testing and educational purposes only. Do not use it for official voting purposes.
 
-Create custom commands within makefile implementing environment variables within .env file as a shortcut for long commands
-- `make <makefile-cmd>`
-- `make <makefile-cmd> <ARGUMENT_NAME=value>`
+## Contributing
 
-### Other
+Contributions are welcome! If you have any suggestions, bug reports, or feature requests, please open an issue or submit a pull request.
 
-Assign environment variable to a value
-- `echo $<ENVIRONMENT-VARIABLE>=<value>`
+## License
 
-`forge create` vs. `forge script`
-- `forge create` - simple, single-contract deployments
-    - `forge create <ContractName> --rpc-url <rpc-url> --private-key <private-key>`
-- `forge script` - complex, multi-contract deployments, init steps, or configurations
-    - `forge script script/<DeploymentContract>.s.sol:<DeploymentContractFunction> --rpc-url <rpc-url> --private-key <private-key> --broadcast`
-
-### Future features
-
-- `emit` where necessary
-- explore how to pass in candidates through deployment script with `--sig run(...)`
+This project is licensed under the [MIT License](LICENSE).
