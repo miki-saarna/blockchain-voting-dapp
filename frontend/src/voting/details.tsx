@@ -25,20 +25,23 @@ export default function Details({
   const [totalVoteCount, setTotalVoteCount] = useState(0);
 
   const fetchData = async () => {
+    const signer = getSigner()
+    let contract = getContract(signer)
+    const checkIfSenderAlreadyVoted = await contract.checkIfSenderAlreadyVoted()
+    setCheckIfSenderAlreadyVoted(checkIfSenderAlreadyVoted)
+    
     const provider = getProvider()
-    const contract = getContract(provider)
+    contract = getContract(provider)
     const voteRewardAmount = await contract.voteRewardAmount()
     const voteRewardBonusAmount = await contract.voteRewardBonusAmount()
     const voteRewardBonusMaxAmount = await contract.voteRewardBonusMaxAmount()
     const totalRegisteredVoters = await contract.totalRegisteredVoters()
     const totalVoteCount = await contract.totalVoteCount()
-    const checkIfSenderAlreadyVoted = await contract.checkIfSenderAlreadyVoted()
     setVoteRewardAmount(voteRewardAmount.toString())
     setVoteRewardBonusAmount(voteRewardBonusAmount.toString())
     setMaxBonusAmount(voteRewardBonusMaxAmount.toString())
     setTotalRegisteredVoters(totalRegisteredVoters.toString())
     setTotalVoteCount(totalVoteCount.toString())
-    setCheckIfSenderAlreadyVoted(checkIfSenderAlreadyVoted)
   }
 
   function convertBigIntToDate(dateAsbigInt: BigInt | null): string {
