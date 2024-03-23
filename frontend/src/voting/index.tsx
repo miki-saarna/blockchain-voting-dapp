@@ -47,6 +47,7 @@ export default function Voting({ isWalletConnected }: { isWalletConnected: boole
         setPollEndTime={setPollEndTime}
         checkIfSenderAlreadyVoted={checkIfSenderAlreadyVoted}
         setCheckIfSenderAlreadyVoted={setCheckIfSenderAlreadyVoted}
+        isWalletConnected={isWalletConnected}
       />
       {/* <Rewards /> */}
     </main>
