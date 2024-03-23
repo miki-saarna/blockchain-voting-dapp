@@ -43,6 +43,8 @@ aderyn :; aderyn .
 
 forge-script :; forge script script/DeployVote.s.sol:DeployVote --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY_1} --broadcast
 
+forge-script-sepolia :; forge script script/DeployVote.s.sol:DeployVote --rpc-url ${SEPOLIA_RPC_URL} --private-key ${PRIVATE_KEY_1} --broadcast --verify
+
 cast-vote :; cast send ${VOTE_ADDRESS} "castVote(uint256)" "${CANDIDATE_INDEX}" --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY_1}
 
 end-poll :; cast send ${VOTE_ADDRESS} "endPoll()" --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY_1}
