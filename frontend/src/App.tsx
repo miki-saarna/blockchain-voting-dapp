@@ -17,7 +17,7 @@ function App(): JSX.Element {
       <Header />
       <Description />
       <MetaMaskInteractions isWalletConnected={isWalletConnected} setIsWalletConnected={setIsWalletConnected} />
-      <Voting />
+      <Voting isWalletConnected={isWalletConnected} />
       <Footer />
     </div>
   );
