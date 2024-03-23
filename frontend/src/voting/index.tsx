@@ -4,7 +4,7 @@ import Poll from './poll';
 import Rewards from './rewards';
 import { getProvider, getContract} from '../utils/blockchainInteractions';
 
-export default function Voting(): JSX.Element {
+export default function Voting({ isWalletConnected }: { isWalletConnected: boolean }): JSX.Element {
 
   const [pollStartTime, setPollStartTime] = useState<BigInt | null>(null);
   const [pollEndTime, setPollEndTime] = useState<BigInt | null>(null);
@@ -21,8 +21,10 @@ export default function Voting(): JSX.Element {
   };
 
   useEffect(() => {
-    fetchPollDetails();
-  }, []);
+    if (isWalletConnected) {
+      fetchPollDetails();
+    }
+  }, [isWalletConnected]);
 
   useEffect(() => {
     setIsPollActive(!!(pollStartTime && !pollEndTime))
@@ -36,6 +38,7 @@ export default function Voting(): JSX.Element {
         pollEndTime={pollEndTime}
         checkIfSenderAlreadyVoted={checkIfSenderAlreadyVoted}
         setCheckIfSenderAlreadyVoted={setCheckIfSenderAlreadyVoted}
+        isWalletConnected={isWalletConnected}
       />
       <p className="text-xs"><span className="font-bold">Note:</span> if you encounter any errors, please terminate the poll by clicking on the "End poll" button if it isn't already terminated and refresh the page.</p>
       <Poll
@@ -44,6 +47,7 @@ export default function Voting(): JSX.Element {
         setPollEndTime={setPollEndTime}
         checkIfSenderAlreadyVoted={checkIfSenderAlreadyVoted}
         setCheckIfSenderAlreadyVoted={setCheckIfSenderAlreadyVoted}
+        isWalletConnected={isWalletConnected}
       />
       {/* <Rewards /> */}
     </main>

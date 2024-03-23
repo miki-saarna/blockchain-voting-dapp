@@ -1,9 +1,13 @@
 import { ethers } from 'ethers';
 import voteContractABI from './DeployVoteABI.json';
 
-export const getProvider = () => new ethers.JsonRpcProvider(process.env.REACT_APP_RPC_URL);
-export const getSigner = () => new ethers.Wallet(process.env.REACT_APP_PRIVATE_KEY, getProvider());
+export const getProvider = () => new ethers.BrowserProvider(window.ethereum);
+export const getSigner = () => getProvider().getSigner();
 export const getContract = (providerOrSigner) => new ethers.Contract(process.env.REACT_APP_VOTE_CONTRACT_ADDRESS, voteContractABI, providerOrSigner);
+
+// export const getProvider = () => new ethers.JsonRpcProvider(process.env.REACT_APP_RPC_URL);
+// export const getSigner = () => new ethers.Wallet(process.env.REACT_APP_PRIVATE_KEY, getProvider());
+// export const getContract = (providerOrSigner) => new ethers.Contract(process.env.REACT_APP_VOTE_CONTRACT_ADDRESS, voteContractABI, providerOrSigner);
 
 // function getProvider() {
 //   const rpcUrl = process.env.REACT_APP_RPC_URL;

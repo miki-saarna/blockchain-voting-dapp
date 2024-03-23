@@ -7,13 +7,15 @@ export default function Details({
   pollStartTime,
   pollEndTime,
   checkIfSenderAlreadyVoted,
-  setCheckIfSenderAlreadyVoted
+  setCheckIfSenderAlreadyVoted,
+  isWalletConnected
 }: {
   isPollActive: boolean,
   pollStartTime: BigInt | null,
   pollEndTime: BigInt | null,
   checkIfSenderAlreadyVoted: boolean,
-  setCheckIfSenderAlreadyVoted: Function
+  setCheckIfSenderAlreadyVoted: Function,
+  isWalletConnected: boolean
 }) {
 
   const divider: number = 1000000000000000000;
@@ -24,37 +26,54 @@ export default function Details({
   const [totalRegisteredVoters, setTotalRegisteredVoters] = useState(0);
   const [totalVoteCount, setTotalVoteCount] = useState(0);
 
-  const fetchData = async () => {
-    const signer = getSigner()
-    let contract = getContract(signer)
-    const checkIfSenderAlreadyVoted = await contract.checkIfSenderAlreadyVoted()
-    setCheckIfSenderAlreadyVoted(checkIfSenderAlreadyVoted)
-    
-    const provider = getProvider()
-    contract = getContract(provider)
-    const voteRewardAmount = await contract.voteRewardAmount()
-    const voteRewardBonusAmount = await contract.voteRewardBonusAmount()
-    const voteRewardBonusMaxAmount = await contract.voteRewardBonusMaxAmount()
-    const totalRegisteredVoters = await contract.totalRegisteredVoters()
-    const totalVoteCount = await contract.totalVoteCount()
-    setVoteRewardAmount(voteRewardAmount.toString())
-    setVoteRewardBonusAmount(voteRewardBonusAmount.toString())
-    setMaxBonusAmount(voteRewardBonusMaxAmount.toString())
-    setTotalRegisteredVoters(totalRegisteredVoters.toString())
-    setTotalVoteCount(totalVoteCount.toString())
-  }
+  useEffect(() => {
+    if (isWalletConnected) {
+      fetchData();
+      fetchDataWithSender();
+    }
+  }, [isWalletConnected])
 
+
+  const fetchData = async () => {
+    try {
+      const provider = getProvider()
+      const contract = getContract(provider)
+      
+      const voteRewardAmount = await contract.voteRewardAmount()
+      const voteRewardBonusAmount = await contract.voteRewardBonusAmount()
+      const voteRewardBonusMaxAmount = await contract.voteRewardBonusMaxAmount()
+      const totalRegisteredVoters = await contract.totalRegisteredVoters()
+      const totalVoteCount = await contract.totalVoteCount()
+      setVoteRewardAmount(voteRewardAmount.toString())
+      setVoteRewardBonusAmount(voteRewardBonusAmount.toString())
+      setMaxBonusAmount(voteRewardBonusMaxAmount.toString())
+      setTotalRegisteredVoters(totalRegisteredVoters.toString())
+      setTotalVoteCount(totalVoteCount.toString())
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  
+  const fetchDataWithSender = async () => {
+    try {
+      const provider = getProvider()
+      const signer = await provider.getSigner()
+      const contract = getContract(signer)
+      const checkIfSenderAlreadyVoted = await contract.checkIfSenderAlreadyVoted()
+      setCheckIfSenderAlreadyVoted(checkIfSenderAlreadyVoted)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  
   function convertBigIntToDate(dateAsbigInt: BigInt | null): string {
     if (!dateAsbigInt) return 'not set';
     const timestamp = Number(dateAsbigInt);
     const formattedDate = dayjs(timestamp * 1000).format('MMM DD, YYYY [at] HH:mm:ss')
-
     return formattedDate
   }
 
-  useEffect(() => {
-    fetchData();
-  }, [])
+  
 
   return (
     <div className="bg-white border border-sage-dark rounded-md overflow-hidden">
