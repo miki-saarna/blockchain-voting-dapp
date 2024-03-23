@@ -4,6 +4,8 @@ Welcome to the Blockchain Voting Smart Contract dApp! This project is designed f
 
 You can interact with this smart contract [here](https://voting-dapp-ashy.vercel.app)!
 
+Visit the smart contract's etherscan.sepolia page [here](https://sepolia.etherscan.io/address/0x7495e254B084193aacD03Cdd9e5A2e1E0B55422a).
+
 You can also import the following Gist ID into Remix: 44065bd0829da53415ed96732502d3b2
 
 ## Overview
