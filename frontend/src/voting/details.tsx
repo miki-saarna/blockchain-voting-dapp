@@ -27,33 +27,33 @@ export default function Details({
   const [totalVoteCount, setTotalVoteCount] = useState(0);
 
   useEffect(() => {
-    fetchData();
-  }, [])
-
-  useEffect(() => {
-    console.log("isWalletConnected", isWalletConnected)
     if (isWalletConnected) {
+      fetchData();
       fetchDataWithSender();
     }
   }, [isWalletConnected])
 
 
   const fetchData = async () => {
-    const provider = getProvider()
-    const contract = getContract(provider)
-
-    const voteRewardAmount = await contract.voteRewardAmount()
-    const voteRewardBonusAmount = await contract.voteRewardBonusAmount()
-    const voteRewardBonusMaxAmount = await contract.voteRewardBonusMaxAmount()
-    const totalRegisteredVoters = await contract.totalRegisteredVoters()
-    const totalVoteCount = await contract.totalVoteCount()
-    setVoteRewardAmount(voteRewardAmount.toString())
-    setVoteRewardBonusAmount(voteRewardBonusAmount.toString())
-    setMaxBonusAmount(voteRewardBonusMaxAmount.toString())
-    setTotalRegisteredVoters(totalRegisteredVoters.toString())
-    setTotalVoteCount(totalVoteCount.toString())
+    try {
+      const provider = getProvider()
+      const contract = getContract(provider)
+      
+      const voteRewardAmount = await contract.voteRewardAmount()
+      const voteRewardBonusAmount = await contract.voteRewardBonusAmount()
+      const voteRewardBonusMaxAmount = await contract.voteRewardBonusMaxAmount()
+      const totalRegisteredVoters = await contract.totalRegisteredVoters()
+      const totalVoteCount = await contract.totalVoteCount()
+      setVoteRewardAmount(voteRewardAmount.toString())
+      setVoteRewardBonusAmount(voteRewardBonusAmount.toString())
+      setMaxBonusAmount(voteRewardBonusMaxAmount.toString())
+      setTotalRegisteredVoters(totalRegisteredVoters.toString())
+      setTotalVoteCount(totalVoteCount.toString())
+    } catch (err) {
+      console.log(err)
+    }
   }
-
+  
   const fetchDataWithSender = async () => {
     try {
       const provider = getProvider()

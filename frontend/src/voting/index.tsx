@@ -21,8 +21,10 @@ export default function Voting({ isWalletConnected }: { isWalletConnected: boole
   };
 
   useEffect(() => {
-    fetchPollDetails();
-  }, []);
+    if (isWalletConnected) {
+      fetchPollDetails();
+    }
+  }, [isWalletConnected]);
 
   useEffect(() => {
     setIsPollActive(!!(pollStartTime && !pollEndTime))
